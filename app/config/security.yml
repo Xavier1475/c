@@ -1,0 +1,50 @@
+jms_security_extra:
+        secure_all_services: false
+        expressions: true
+security:
+    encoders:
+        FactelBundle\Entity\User: 
+            algorithm: sha512
+            encode-as-base64: true
+            iterations: 10
+        Symfony\Component\Security\Core\User\User: plaintext
+    role_hierarchy:
+        ROLE_EMISOR_ADMIN:      ROLE_EMISOR
+
+    providers:
+        chain_provider:
+            chain:
+                providers: [in_memory, user_db]
+        in_memory:
+            memory:
+                users:
+                    facilfact: { password: facilfact, roles: 'ROLE_ADMIN' }
+        user_db:
+            entity: { class: FactelBundle\Entity\User, property: username }
+       
+
+    # the main part of the security, where you can set up firewalls
+    # for specific sections of your app
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        # the login page has to be accessible for everybody
+        facilfact_login:
+            pattern:  ^/login$
+            security: false
+
+        # secures part of the application
+        facilfact_secured_area:
+            pattern:    ^/(|login_check|logout) 
+            form_login:
+                default_target_path: /
+                check_path: login_check
+                login_path: login
+            logout:
+                path:   logout
+                target: login
+           
+    access_control:
+        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }

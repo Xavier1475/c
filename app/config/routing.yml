@@ -1,0 +1,15 @@
+inicio:
+    resource: "@InicioBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+factel:
+    resource: "@FactelBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+login_check:
+    pattern:   /login_check
+
+logout:
+    pattern: /logout

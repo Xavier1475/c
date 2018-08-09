@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+        <title>Sistema de Facturaci&oacute;n Electr&oacute;nica</title>
+        <meta name="description" content="Sistema de Facturación Electrónica" />	    
+        <meta name="keywords" content="SRI, facturacion electronica, factura, nota debito, nota de credito, lote">
+
+        <!-- Bootstrap Core CSS -->
+        <link href="{{asset('recursos/inicio/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+
+        <!-- Font Awesome CSS -->
+        <link href="{{asset('recursos/inicio/css/font-awesome.min.css')}}" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="{{asset('recursos/inicio/css/animate.css')}}" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="{{asset('recursos/inicio/css/style.css')}}" rel="stylesheet">
+
+        <!-- Custom Fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+
+        <link rel="shortcut icon" href="{{asset('recursos/inicio/images/favicon.png')}}">
+
+       
+
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+
+    <body>
+
+
+        <!-- Start Main Body Section -->
+        <div class="mainbody-section text-center">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <div class="menu-item blue">
+                            <a href="#feature-modal" data-toggle="modal">
+                                <i class="fa fa-magic"></i>
+                                <p>FACILFACT</p>
+                            </a>
+                        </div>
+                        <div class="menu-item light-red">
+                            <a href="#about-modal" data-toggle="modal">
+                                <i class="fa fa-user"></i>
+                                <p>¿Qui&eacute;nes Somos?</p>
+                            </a>
+                        </div>
+                        <div class="menu-item green">
+                            <a href="#portfolio-modal" data-toggle="modal">
+                                <i class="fa fa-user-plus"></i>
+                                <p>Clientes</p>
+                            </a>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <!-- Start Carousel Section -->
+                        <div class="home-slider">
+                            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" style="padding-bottom: 30px;">
+                                <!-- Indicators -->
+                                <ol class="carousel-indicators">
+                                    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                                </ol>
+
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner">
+                                    <div class="item active">
+                                        <img src="{{asset('recursos/inicio/images/portada-01.jpg')}}" class="img-responsive" alt="">
+                                    </div>
+                                    <div class="item">
+                                        <img src="{{asset('recursos/inicio/images/about-02.jpg')}}" class="img-responsive" alt="">
+                                    </div>
+                                    <div class="item">
+                                        <img src="{{asset('recursos/inicio/images/about-01.jpg')}}" class="img-responsive" alt="">
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- Start Carousel Section -->
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="menu-item color responsive">
+                                    <a href="#service-modal" data-toggle="modal">
+                                        <i class="fa fa-briefcase"></i>
+                                        <p>Productos</p>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="menu-item light-orange responsive-2">
+                                    <a href="#team-modal" data-toggle="modal">
+                                        <i class="fa fa-users"></i>
+                                        <p>Nuestro Equipo</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="menu-item color">
+                            <a href="#news-modal" data-toggle="modal">
+                                <i class="fa fa-file-video-o"></i>
+                                <p>Videos</p>
+                            </a>
+                        </div>
+                        <div class="menu-item blue">
+                            <a href="#testimonial-modal" data-toggle="modal">
+                                <i class="fa fa-question-circle"></i>
+                                <p>Todo Sobre Facturaci&oacute;n</p>
+                            </a>
+                        </div>
+                        <div class="menu-item light-red">
+                            <a href="#contact-modal" data-toggle="modal">
+                                <i class="fa fa-envelope-o"></i>
+                                <p>Cont&aacute;ctenos </p>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Main Body Section -->
+
+        <!-- Start Copyright Section -->
+        <div class="copyright text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div>Design & Developed by <a href="https://www.facebook.com/Shahriyar.Ahmed.Sohel" target="_blank">Shahriyar Ahmed</a> for <a href="http://graygrids.com">GrayGrids</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Copyright Section -->
+
+
+        <!-- Start Feature Section -->
+        <div class="section-modal modal fade" id="feature-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="section-title text-center">
+                            <h3>FACILFACT</h3>
+                            <p>Sistema de Facturaci&oacute;n Electr&oacute;nica a su medida.</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-offset-1 col-sm-offset-1 col-md-10 col-sm-10 col-xs-12">
+                            <div class="feature">
+                                <div class="feature-content">
+                                    <h4>¿Qu&eacute; es FACILFACT?</h4>
+                                    <p>FACILFACT es un sistema desarrollado totalmente en JAVA, caracter&iacute;stica que no entorpece la integraci&oacute;n con cualquier sistema, sin importar
+                                    el lenguaje en que se encuentre desarrollado. Brinda a sus clientes un servicio web, facilitando su uso, pues no es necesario que se conozca 
+                                    nada relacionado con la estructura de los XML del Servicio de Rentas Internas(SRI) ni tampoco nada del proceso de Facturaci&oacute;n Electr&oacute;nica.
+                                    Nuestros clientes solo tendr&aacute;n que destinar sus esfuerzos y recursos humanos a identificar la ubicaci&oacute;n de los datos que requiere el 
+                                    comprobante, pues nuestro sistema se encarga de realizar el trabajo pesado. Es una soluci&oacute;n innovadora en el mercado actual, pues elimina la tradicional
+                                    competencia del cliente de crear archivos, muchas veces con formatos y estandares creados por el propio proveedor con escasa documentaci&oacute;n, donde se guardan los 
+                                    datos del comprobante.</p>
+                                    
+                                    <br />
+                                    <h4>¿Qu&eacute; no es FACILFACT?</h4>
+                                    <p>FACILFACT no es un Sistema Contable, mucho menos un ERP, nunca fue el objetivo del equipo de trabajo. Nuestro equipo destin&oacute; todo su esfuerzo
+                                        a crear un sistema totalmente de Facturaci&oacute;n Electr&oacute;nica, enfocandose totalmente en minimizar el proceso de integraci&oacute;n.</p>
+                                   <br />
+                                    <h4>¿Puede ser usted nuestro cliente?</h4>
+                                    <p>El equipo de desarrollo de FACILFACT no ha enmarcado su radio de acci&oacute;n solamente en las  medianas y grandes empresas que tienen un sistema al cual 
+                                        integrarle el m&oacute;dulo de facturaci&oacute;n electr&oacute;nica sino que ha ampliado sus horizontes y ha desarrollado un Sistema Web de Facturaci&oacute;n para brindarle 
+                                        una soluci&oacute;n a todos aquellos clientes que no cuentan con el capital o no tienen el m&iacute;nimo inter&eacute;s de adquirir un sistema contable. Esta soluci&oacute;n se 
+                                        encuentra hospedada en el servidor de nuestro equipo y brinda todas las funcionalidades necesarias para un buen desempe&ntilde;o. Por tal motivo no existe condiciones
+                                        para convertirse en nuestro cliente, siempre tendremos una soluci&oacute;n que se adapte a sus necesidades y sus posibilidades econ&oacute;micas. ¡Lo esperamos, no demore!</p>
+                                </div>
+                            </div>
+                        </div><!-- /.col-md-3 -->
+                       
+                    </div><!-- /.row -->
+                </div>
+            </div>
+        </div>
+        <!-- End Feature Section -->
+
+
+
+        <!-- Start Portfolio Section -->
+        <div class="section-modal modal fade" id="portfolio-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="section-title text-center">
+                            <h3>Our Portfolio</h3>
+                            <p>Duis aute irure dolor in reprehenderit in voluptate</p>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <div class="portfolio-item">
+                                <img src="{{asset('recursos/inicio/images/portfolio/1.png')}}" class="img-responsive" alt="...">
+                                <div class="portfolio-details text-center">
+                                    <h4>Project Name</h4>
+                                    <a href="#"><i class="fa fa-link"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="portfolio-item">
+                                <img src="{{asset('recursos/inicio/images/portfolio/2.png')}}" class="img-responsive" alt="...">
+                                <div class="portfolio-details text-center">
+                                    <h4>Project Name</h4>
+                                    <a href="#"><i class="fa fa-link"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="portfolio-item">
+                                <img src="{{asset('recursos/inicio/images/portfolio/3.png')}}" class="img-responsive" alt="...">
+                                <div class="portfolio-details text-center">
+                                    <h4>Project Name</h4>
+                                    <a href="#"><i class="fa fa-link"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="portfolio-item">
+                                <img src="{{asset('recursos/inicio/images/portfolio/4.png')}}" class="img-responsive" alt="...">
+                                <div class="portfolio-details text-center">
+                                    <h4>Project Name</h4>
+                                    <a href="#"><i class="fa fa-link"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="portfolio-item">
+                                <img src="{{asset('recursos/inicio/images/portfolio/5.png')}}" class="img-responsive" alt="...">
+                                <div class="portfolio-details text-center">
+                                    <h4>Project Name</h4>
+                                    <a href="#"><i class="fa fa-link"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="portfolio-item">
+                                <img src="{{asset('recursos/inicio/images/portfolio/6.png')}}" class="img-responsive" alt="...">
+                                <div class="portfolio-details text-center">
+                                    <h4>Project Name</h4>
+                                    <a href="#"><i class="fa fa-link"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="portfolio-item">
+                                <img src="{{asset('recursos/inicio/images/portfolio/7.png')}}" class="img-responsive" alt="...">
+                                <div class="portfolio-details text-center">
+                                    <h4>Project Name</h4>
+                                    <a href="#"><i class="fa fa-link"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="portfolio-item">
+                                <img src="{{asset('recursos/inicio/images/portfolio/8.png')}}" class="img-responsive" alt="...">
+                                <div class="portfolio-details text-center">
+                                    <h4>Project Name</h4>
+                                    <a href="#"><i class="fa fa-link"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="portfolio-item">
+                                <img src="{{asset('recursos/inicio/images/portfolio/9.png')}}" class="img-responsive" alt="...">
+                                <div class="portfolio-details text-center">
+                                    <h4>Project Name</h4>
+                                    <a href="#"><i class="fa fa-link"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="portfolio-item">
+                                <img src="{{asset('recursos/inicio/images/portfolio/10.png')}}" class="img-responsive" alt="...">
+                                <div class="portfolio-details text-center">
+                                    <h4>Project Name</h4>
+                                    <a href="#"><i class="fa fa-link"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="portfolio-item">
+                                <img src="{{asset('recursos/inicio/images/portfolio/11.png')}}" class="img-responsive" alt="...">
+                                <div class="portfolio-details text-center">
+                                    <h4>Project Name</h4>
+                                    <a href="#"><i class="fa fa-link"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="portfolio-item">
+                                <img src="{{asset('recursos/inicio/images/portfolio/12.png')}}" class="img-responsive" alt="...">
+                                <div class="portfolio-details text-center">
+                                    <h4>Project Name</h4>
+                                    <a href="#"><i class="fa fa-link"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div><!-- /.row -->
+                </div>
+
+            </div>
+        </div>
+        <!-- End Portfolio Section -->
+
+
+        <!-- Start About Us Section -->
+        <div class="section-modal modal fade" id="about-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-offset-1 col-md-9 section-title text-center">
+                            <h3>¿Quiénes Somos?</h3>
+                            <p>Duis aute irure dolor in reprehenderit in voluptate</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-offset-1 col-md-9">
+                            <div class="about-text">
+                                <p>FACILFACT est&aacute; formado por  un equipo de  trabajo de profesionales con m&aacute;s de 6 años de experiencia en el desarrollo de software.  Nos caracterizamos por nuestra seriedad y compromiso con cada uno de nuestros clientes. Contamos con soluciones de Facturaci&oacute;n Electr&oacute;nica  con precios competitivos y con todas las funcionalidades que requiere el Servicio de Rentas Internas (SRI) del Ecuador. </p>
+                            </div>
+                        </div>
+                    </div><!-- /.row -->
+                    <div class="row">
+                        <div class="col-md-offset-1 col-md-6">
+                            <div class="custom-tab ">
+
+                                <ul class="nav nav-tabs nav-justified" role="tablist">
+                                    <li class="active"><a href="#tab-1" role="tab" data-toggle="tab">Misi&oacute;n</a></li>
+                                    <li><a href="#tab-2" role="tab" data-toggle="tab">Visi&oacute;n</a></li>
+                                    <li><a href="#tab-3" role="tab" data-toggle="tab">Objetivo</a></li>
+                                </ul>
+
+                                <div class="tab-content">
+
+                                    <div class="tab-pane active" id="tab-1">
+                                        <p>Nuestra visi&oacute;n es convertirnos en el principal proveedor de Sistemas para Facturaci&oacute;n Electr&oacute;nica. Obtener el reconocimiento de todos nuestros clientes y cumplir con sus expectativas brind&aacute;ndoles buen servicio y rentabilidad.</p>
+
+                                    </div>
+                                    <div class="tab-pane" id="tab-2">
+                                        <p>Nuestra misi&oacute;n es brindar la capacitaci&oacute;n necesaria a cada uno de nuestros clientes para hacer del proceso de Facturación Electrónica una actividad cotidiana. Dar lo mejor de nosotros para lograr estar a la altura de las empresas l&iacute;deres de este mercado.</p>
+                                    </div>
+                                    <div class="tab-pane" id="tab-3">
+                                        <p>Brindar soluciones que cumplan con las necesidades de nuestros clientes. Minimizar el tiempo de implementaci&oacute;n e integraci&oacute;n de nuestros sistemas y brindar la mejor relaci&oacute;n costos-beneficios.</p>
+                                    </div>
+
+                                </div><!-- /.tab-content -->
+
+                            </div>
+                        </div>
+                        <div class="col-md-4 about-text">
+                            <div class="col-md-12">
+                                <ul>
+
+                                    <li><i class="fa fa-check-square"></i>Soluciones a la medida</li>
+                                    <li><i class="fa fa-check-square"></i>R&aacute;pida integraci&oacute;n</li>
+                                    <li><i class="fa fa-check-square"></i>Precios econ&oacute;micos</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-12">
+                                <ul>
+                                    <li><i class="fa fa-check-square"></i>Capacitaci&oacute;n y Entrenamiento</li>
+                                    <li><i class="fa fa-check-square"></i>Responsabilidad y Compromiso</li>
+                                    <li><i class="fa fa-check-square"></i>Soporte 100% recomendado</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- End About Us Section -->
+
+
+        <!-- Start Service Section -->
+        <div class="section-modal modal fade" id="service-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="section-title text-center">
+                            <h3>Our Services</h3>
+                            <p>Duis aute irure dolor in reprehenderit in voluptate</p>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="feature-2">
+                                <div class="media">
+                                    <i class="fa fa-magic pull-left"></i>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">Web Design</h4>
+                                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor. reprehenderit</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.col-md-4 -->
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="feature-2">
+                                <div class="media">
+                                    <i class="fa fa-css3 pull-left"></i>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">HTML5 & CSS3</h4>
+                                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor. reprehenderit</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.col-md-4 -->
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="feature-2">
+                                <div class="media">
+                                    <i class="fa fa-wordpress pull-left"></i>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">Wordpress Theme</h4>
+                                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor. reprehenderit</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.col-md-4 -->
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="feature-2">
+                                <div class="media">
+                                    <i class="fa fa-plug pull-left"></i>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">Wordpress Plugin</h4>
+                                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor. reprehenderit</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.col-md-4 -->
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="feature-2">
+                                <div class="media">
+                                    <i class="fa fa-joomla pull-left"></i>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">Joomla Template</h4>
+                                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor. reprehenderit</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.col-md-4 -->
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="feature-2">
+                                <div class="media">
+                                    <i class="fa fa-cube pull-left"></i>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">Joomla Extension</h4>
+                                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor. reprehenderit</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.col-md-4 -->
+
+                    </div><!-- /.row -->
+                </div>
+
+                <div class="pricing-section">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-6">
+                                <div class="pricing-table">
+                                    <div class="plan-name">
+                                        <h3>Free</h3>
+                                    </div>
+                                    <div class="plan-price">
+                                        <div class="price-value">$49<span>.00</span></div>
+                                        <div class="interval">per month</div>
+                                    </div>
+                                    <div class="plan-list">
+                                        <ul>
+                                            <li>40 GB Storage</li>
+                                            <li>40GB Transfer</li>
+                                            <li>10 Domains</li>
+                                            <li>20 Projects</li>
+                                            <li>Free installation</li>
+                                        </ul>
+                                    </div>
+                                    <div class="plan-signup">
+                                        <a href="#" class="btn-system btn-small">Sign Up Now</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6">
+                                <div class="pricing-table">
+                                    <div class="plan-name">
+                                        <h3>Standard</h3>
+                                    </div>
+                                    <div class="plan-price">
+                                        <div class="price-value">$49<span>.00</span></div>
+                                        <div class="interval">per month</div>
+                                    </div>
+                                    <div class="plan-list">
+                                        <ul>
+                                            <li>40 GB Storage</li>
+                                            <li>40GB Transfer</li>
+                                            <li>10 Domains</li>
+                                            <li>20 Projects</li>
+                                            <li>Free installation</li>
+                                        </ul>
+                                    </div>
+                                    <div class="plan-signup">
+                                        <a href="#" class="btn-system btn-small">Sign Up Now</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-6">
+                                <div class="pricing-table">
+                                    <div class="plan-name">
+                                        <h3>Premium</h3>
+                                    </div>
+                                    <div class="plan-price">
+                                        <div class="price-value">$49<span>.00</span></div>
+                                        <div class="interval">per month</div>
+                                    </div>
+                                    <div class="plan-list">
+                                        <ul>
+                                            <li>40 GB Storage</li>
+                                            <li>40GB Transfer</li>
+                                            <li>10 Domains</li>
+                                            <li>20 Projects</li>
+                                            <li>Free installation</li>
+                                        </ul>
+                                    </div>
+                                    <div class="plan-signup">
+                                        <a href="#" class="btn-system btn-small">Sign Up Now</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6">
+                                <div class="pricing-table">
+                                    <div class="plan-name">
+                                        <h3>Professional</h3>
+                                    </div>
+                                    <div class="plan-price">
+                                        <div class="price-value">$49<span>.00</span></div>
+                                        <div class="interval">per month</div>
+                                    </div>
+                                    <div class="plan-list">
+                                        <ul>
+                                            <li>40 GB Storage</li>
+                                            <li>40GB Transfer</li>
+                                            <li>10 Domains</li>
+                                            <li>20 Projects</li>
+                                            <li>Free installation</li>
+                                        </ul>
+                                    </div>
+                                    <div class="plan-signup">
+                                        <a href="#" class="btn-system btn-small">Sign Up Now</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- End Service Section -->
+
+
+        <!-- Start Team Member Section -->
+        <div class="section-modal modal fade" id="team-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="section-title text-center">
+                            <h3>Our Expert Team</h3>
+                            <p>Duis aute irure dolor in reprehenderit in voluptate</p>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-3 col-sm-6">
+                            <div class="team-member">
+                                <img src="{{asset('recursos/inicio/images/team/manage-1.png')}}" class="img-responsive" alt="">
+                                <div class="team-details">
+                                    <h4>John Doe</h4>
+                                    <div class="designation">Senior Web Developer</div>
+                                    <ul style="text-align: center;">
+                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-6">
+                            <div class="team-member">
+                                <img src="{{asset('recursos/inicio/images/team/manage-2.png')}}" class="img-responsive" alt="">
+                                <div class="team-details">
+                                    <h4>John Doe</h4>
+                                    <div class="designation">Senior Web Developer</div>
+                                    <ul style="text-align: center;">
+                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-6">
+                            <div class="team-member">
+                                <img src="{{asset('recursos/inicio/images/team/manage-3.png')}}" class="img-responsive" alt="">
+                                <div class="team-details">
+                                    <h4>John Doe</h4>
+                                    <div class="designation">Senior Web Developer</div>
+                                    <ul style="text-align: center;">
+                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-6">
+                            <div class="team-member">
+                                <img src="{{asset('recursos/inicio/images/team/manage-4.png')}}" class="img-responsive" alt="">
+                                <div class="team-details">
+                                    <h4>John Doe</h4>
+                                    <div class="designation">Senior Web Developer</div>
+                                    <ul style="text-align: center;">
+                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-6">
+                            <div class="team-member">
+                                <img src="{{asset('recursos/inicio/images/team/team-1.jpg')}}" class="img-responsive" alt="">
+                                <div class="team-details">
+                                    <h4>John Doe</h4>
+                                    <div class="designation">Senior Web Developer</div>
+                                    <ul style="text-align: center;">
+                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-6">
+                            <div class="team-member">
+                                <img src="{{asset('recursos/inicio/images/team/team-2.jpg')}}" class="img-responsive" alt="">
+                                <div class="team-details">
+                                    <h4>John Doe</h4>
+                                    <div class="designation">Senior Web Developer</div>
+                                    <ul style="text-align: center;">
+                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-6">
+                            <div class="team-member">
+                                <img src="{{asset('recursos/inicio/images/team/team-3.jpg')}}" class="img-responsive" alt="">
+                                <div class="team-details">
+                                    <h4>John Doe</h4>
+                                    <div class="designation">Senior Web Developer</div>
+                                    <ul style="text-align: center;">
+                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-6">
+                            <div class="team-member">
+                                <img src="{{asset('recursos/inicio/images/team/team-4.jpg')}}" class="img-responsive" alt="">
+                                <div class="team-details">
+                                    <h4>John Doe</h4>
+                                    <div class="designation">Senior Web Developer</div>
+                                    <ul style="text-align: center;">
+                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div><!-- /.row -->
+                </div>
+
+            </div>
+        </div>
+        <!-- End Team Member Section -->
+
+
+        <!-- Start Latest News Section -->
+        <div class="section-modal modal fade" id="news-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="section-title text-center">
+                            <h3>Exclusive News</h3>
+                            <p>Duis aute irure dolor in reprehenderit in voluptate</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="latest-post">
+                                <img src="{{asset('recursos/inicio/images/blog-01.jpg')}}" class="img-responsive" alt="">
+                                <h4><a href="#">Standard Post with Image</a></h4>
+                                <div class="post-details">
+                                    <ul>
+                                        <li><i class="fa fa-user"></i> Auther : iThemesLab</li>
+                                        <li><i class="fa fa-calendar"></i> 07 Aug, 2014</li>
+                                        <li><i class="fa fa-tag"></i> Music</li>
+                                    </ul>
+                                </div>
+                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</p>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="latest-post">
+                                <img src="{{asset('recursos/inicio/images/blog-02.jpg')}}" class="img-responsive" alt="">
+                                <h4><a href="#">Standard Post with Image</a></h4>
+                                <div class="post-details">
+                                    <ul>
+                                        <li><i class="fa fa-user"></i> Auther : iThemesLab</li>
+                                        <li><i class="fa fa-calendar"></i> 07 Aug, 2014</li>
+                                        <li><i class="fa fa-tag"></i> Music</li>
+                                    </ul>
+                                </div>
+                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</p>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="latest-post">
+                                <img src="{{asset('recursos/inicio/images/blog-03.jpg')}}" class="img-responsive" alt="">
+                                <h4><a href="#">Standard Post with Image</a></h4>
+                                <div class="post-details">
+                                    <ul>
+                                        <li><i class="fa fa-user"></i> Auther : iThemesLab</li>
+                                        <li><i class="fa fa-calendar"></i> 07 Aug, 2014</li>
+                                        <li><i class="fa fa-tag"></i> Music</li>
+                                    </ul>
+                                </div>
+                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</p>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="latest-post">
+                                <img src="{{asset('recursos/inicio/images/blog-04.jpg')}}" class="img-responsive" alt="">
+                                <h4><a href="#">Standard Post with Image</a></h4>
+                                <div class="post-details">
+                                    <ul>
+                                        <li><i class="fa fa-user"></i> Auther : iThemesLab</li>
+                                        <li><i class="fa fa-calendar"></i> 07 Aug, 2014</li>
+                                        <li><i class="fa fa-tag"></i> Music</li>
+                                    </ul>
+                                </div>
+                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.</p>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- End Latest News Section -->
+
+
+
+        <!-- Start Contact Section -->
+        <div class="section-modal modal fade contact" id="contact-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="section-title text-center">
+                            <h3>Contacte con nosotros</h3>
+                            <p>Informarle es nuestra prioridad</p>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <div class="footer-contact-info">
+                                <h4>Informaci&oacute;n de Contacto</h4>
+                                <ul>
+                                    <li><strong>E-mail :</strong> administracion@facilfact.com</li>
+                                    <li><strong>Tel&eacute;fono :</strong> (02) 6018166 </li>
+                                    <li><strong>Celular :</strong> +593-997739485</li>
+                                    <li><strong>Web :</strong> www.facilfact.com</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="footer-social text-center">
+                                <ul>
+                                    <li><a href="http://facebook.com/facilfact" target="_blank"><i class="fa fa-facebook "></i></a></li>
+                                    <li><a href="https://twitter.com/FACILFACT" target="_blank"><i class="fa fa-twitter "></i></a></li>
+                                    <li><a href="#"><i class="fa fa-youtube "></i></a></li>
+                                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="footer-contact-info">
+                                <h4>Horario</h4>
+                                <ul>
+                                    <li><strong>Lun-Vie :</strong> 9 am a 6 pm</li>
+                                    <li><strong>Sab :</strong> 10 am a 2 pm</li>
+                                    <li><strong>Dom :</strong> Descanso</li>
+                                    <br />
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div><!--/.row -->
+                    <div class="row" style="padding-top: 80px;">
+                        <div class="col-md-12">
+                            <form name="sentMessage" id="contactForm" novalidate>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Nombre *" id="name" required data-validation-required-message="Por favor entre su nombre.">
+                                            <p class="help-block text-danger"></p>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="email" class="form-control" placeholder="Email *" id="email" required data-validation-required-message="Por favor entre su correo electr&oacute;nico.">
+                                            <p class="help-block text-danger"></p>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="tel" class="form-control" placeholder="Tel&eacute;fono *" id="phone" required data-validation-required-message="Por favor entre su n&u&uacute;mero telef&oacute;nico.">
+                                            <p class="help-block text-danger"></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <textarea class="form-control" placeholder="Mensaje *" id="message" required data-validation-required-message="Escriba su mensaje."></textarea>
+                                            <p class="help-block text-danger"></p>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="col-lg-12 text-center">
+                                        <div id="success"></div>
+                                        <button type="submit" class="btn btn-primary">Enviar Mensaje</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- End Contact Section -->
+
+
+        <!-- Start Testimonial Section -->
+        <div class="section-modal modal fade contact" id="testimonial-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="section-title text-center">
+                            <h3>Facturaci&oacute;n Electr&oacute;nica </h3>
+                            <p>Todo lo que necesita saber sobre Facturaci&oacute;n Electr&oacute;nica propuesta por el Servicio de Rentas Internas(SRI).</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="feature-2">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <h4 class="media-heading">Cu&aacute;les son los beneficios de la facturaci&oacute;n electr&oacute;nica?</h4>
+
+                                        <ul>
+                                            <li><i class="fa fa-check-square-o"></i>Menor costo en el cumplimiento de obligaciones tributarias.</li>
+                                            <li><i class="fa fa-check-square-o"></i>Mayor seguridad en el resguardo de los documentos.</li>
+                                            <li><i class="fa fa-check-square-o"></i>Eliminaci&oacute;n de almacenamiento físico.</li>
+                                            <li><i class="fa fa-check-square-o"></i>Cuidado del medio ambiente.</li>
+                                            <li><i class="fa fa-check-square-o"></i>Consulta en línea de validez de transacci&oacute;n.</li>
+                                            <li><i class="fa fa-check-square-o"></i>Misma validez tributaria que en facturaci&oacute;n f&iacute;sica, pudiendo mantener las dos modalidades.</li>
+                                            <li><i class="fa fa-check-square-o"></i>Proceso &aacute;gil y sencillo</li>
+                                            <li><i class="fa fa-check-square-o"></i>Proceso administrativos m&aacute;s r&aacute;pidos y eficientes.</li>
+                                        </ul>  
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.col-md-4 -->
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="feature-2">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <h4 class="media-heading">Qu&eacute; documentos se puede emitir electr&oacute;nicamente?</h4>
+                                        <li><i class="fa fa-check-square-o"></i>Factura</li>
+                                        <li><i class="fa fa-check-square-o"></i>Comprobantes de Retenci&oacute;n</li>
+                                        <li><i class="fa fa-check-square-o"></i>Notas de Cr&eacute;dito</li>
+                                        <li><i class="fa fa-check-square-o"></i>Notas de D&eacute;bito</li>
+                                        <li><i class="fa fa-check-square-o"></i>Gu&iacute;as de Remisi&oacute;n</li>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.col-md-4 -->
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="feature-2">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <h4 class="media-heading">C&oacute;mo me adhiero a Facturaci&oacute;n Electr&oacute;nica?</h4>
+                                        <li><i class="fa fa-check-square-o"></i>Los contribuyentes que quieran adherirse al nuevo esquema de emisi&oacute;n de comprobantes electr&oacute;nicos deber&aacute;n presentar su solicitud a trav&eacute;s de la p&aacute;gina web del SRI, en la aplicaci&oacute;n “Comprobantes Electr&oacute;nicos”, disponible en el sistema de Servicios en L&iacute;nea.</li>
+                                        <li><i class="fa fa-check-square-o"></i>Previamente deber&aacute;n contar con un certificado digital de firma electr&oacute;nica y mantenerlo v&aacute;lido y vigente, &eacute;ste puede ser adquirido en una de las Entidades de Certificaci&oacute;n autorizadas en el pa&iacute;s.</li>
+                                        <li><i class="fa fa-check-square-o"></i>Los contribuyentes que deseen adherirse a este esquema deber&aacute;n, solicitar autorizaci&oacute;n para el ambiente de pruebas y posteriormente solicitar autorizaci&oacute;n para el ambiente de producci&oacute;n.</li>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.col-md-4 -->
+                    </div><!-- /.row -->
+
+                    <div class="row">
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="feature-2">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <h4 class="media-heading">Qu&eacute; es el ambiente de pruebas o certificaci&oacute;n?</h4>
+                                        <ul>
+                                            <li><i class="fa fa-check-square-o"></i>El ambiente de pruebas o certificaci&oacute;n de comprobantes electr&oacute;nicos es un ambiente dise&ntilde;ado para que los contribuyentes hagan los ajustes correspondientes a sus aplicativos hasta que se encuentren depurados completamente previo a la emisi&oacute;n de comprobantes electr&oacute;nicos en el ambiente de producci&oacute;n.</li>
+                                            <li><i class="fa fa-check-square-o"></i>Los comprobantes generados en este ambiente no tienen validez tributaria.</li>
+                                            <li><i class="fa fa-check-square-o"></i>Los contribuyentes pueden estar en este ambiente el tiempo que consideren necesario.</li>
+                                        </ul> 
+                                        <br />
+                                        <h4 class="media-heading">Qu&eacute; es el ambiente de producci&oacute;n?</h4>
+                                        <li><i class="fa fa-check-square-o"></i>Es un ambiente real donde se procesar&aacute;n los comprobantes con validez tributaria y legal.</li>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.col-md-4 -->
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="feature-2">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <h4 class="media-heading">C&oacute;mo se solicita el ambiente de pruebas o certificaci&oacute;n?</h4>
+                                        <ul>
+                                            <li><i class="fa fa-check-square-o"></i>Para la obtención de la autorizaci&oacute;n de comprobantes electr&oacute;nicos se deben seguir los siguientes pasos:
+                                                <ul>
+                                                    <li>Ingresar al portal del SRI www.sri.gob.ec con el ruc y clave.</li>
+                                                    <li>Ingresar a la opci&oacute;n General.</li>
+                                                    <li>Ingresar al link Comprobantes electr&oacute;nicos.</li>
+                                                    <li>Ingresar al link de Pruebas (siempre se debe obtener la certificaci&oacute;n primero en pruebas).</li>
+                                                    <li>Ingresar al link de autorizaci&oacute;n.</li>
+                                                </ul>
+                                            </li>
+                                            <li><i class="fa fa-check-square-o"></i>Para iniciar con las pruebas en el ambiente de certificaci&oacute;n se recomienda obtener la autorizaci&oacute;n de emisi&oacute;n para todos los tipos de comprobantes.</li>
+                                            <li><i class="fa fa-check-square-o"></i>Cuando el contribuyente se encuentre listo y haya probado sus procesos de env&iacute;o, recepci&oacute;n y validaci&oacute;n de los datos que se encuentran en sus tramas xml, podr&aacute; pasar al ambiente de producci&oacute;n.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.col-md-4 -->
+
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="feature-2">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <h4 class="media-heading">C&oacute;mo se consulta la validez de comprobantes electr&oacute;nicos?</h4>
+                                        <ul>
+                                            <li><i class="fa fa-check-square-o"></i>Consultas Privadas:
+                                                <ul>
+                                                    <li>Ingresar al portal del SRI www.sri.gob.ec con el ruc y clave.</li>
+                                                    <li>Ingresar a la opci&oacute;n General</li>
+                                                    <li>Ingresar al link Comprobantes electr&oacute;nicos.</li>
+                                                    <li>Ingresar al link de Pruebas &oacute; producci&oacuten</li>
+                                                    <li>Ingresar al link de consultas.</li>
+                                                    <li>Ingresar al link de Validez de Comprobantes</li>
+
+                                                </ul>
+                                            </li>
+                                            <li><i class="fa fa-check-square-o"></i>Consultas Privadas:
+                                                <ul>
+                                                    <li>Ingresar al portal del SRI www.sri.gob.ec.</li>
+                                                    <li>Ingresar a las consultas P&uacute;blicas en el link Comprobantes Electr&oacute;nicos</li>
+                                                    <li>Ingresar al link Validez de Comprobantes Electr&oacute;nicos</li>
+                                                </ul>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.col-md-4 -->
+                    </div><!-- /.row -->
+                    <div class="row">
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="feature-2">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <h4 class="media-heading">D&oacute;nde puedo adquirir un certificado de firma digital?</h4>
+                                        <ul>
+                                            <li><i class="fa fa-check-square-o"></i>Banco Central del Ecuador</li>
+                                            <li><i class="fa fa-check-square-o"></i>ANF</li>
+                                            <li><i class="fa fa-check-square-o"></i>Segurity Data</li>
+                                        </ul>
+                                        <br />
+                                        <h4 class="media-heading">C&oacute;mo se puede recuperar un comprobante electr&oacute;nico autorizado?</h4>
+                                        <ul>
+                                            <li><i class="fa fa-check-square-o"></i>Un comprobante autorizado o rechazado se pueden recuperar ingresando a la p&aacute;gina web del SRI, registrando con usuario y clave en la opci&oacute;n Servicios en l&iacute;nea/Comprobantes Electr&oacute;nicos/Producci&oacute;n/Consultas/Recuperaci&oacute;n de Comprobantes Electr&oacute;nicos autorizados.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.col-md-4 -->
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="feature-2">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <h4 class="media-heading">Como se procede cuando hay error en las facturas si no hay anulaci&oacute;n?</h4>
+                                        <ul>
+                                            <li><i class="fa fa-check-square-o"></i>Para anular una factura esta debe hacerse a trav&eacute;s de una nota de cr&eacute;dito.</li>
+                                        </ul>
+                                        <br />
+                                        <h4 class="media-heading">Se puede emitir una nota de cr&eacute;dito basado en una factura f&iacute;sica?</h4>
+                                        <ul>
+                                            <li><i class="fa fa-check-square-o"></i>Un comprobante electr&oacute;nico se puede afectar con uno f&iacute;sico y viceversa.</li>
+                                        </ul>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.col-md-4 -->
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="feature-2">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <h4 class="media-heading">Qu&eacute; es el RIDE?</h4>
+                                        <ul>
+                                            <li><i class="fa fa-check-square-o"></i>Es un formato de representaci&oacute;n impresa de un documento electr&oacute;nico.</li>
+                                        </ul>
+                                        <br />
+                                        <h4 class="media-heading">En RIDE qu&eacute; casos se emite?</h4>
+                                        <ul>
+                                            <li><i class="fa fa-check-square-o"></i>Cuando no exista el consentimiento del usuario o consumidor para recibir el comprobante electr&oacute;nico.</li>
+                                            <li><i class="fa fa-check-square-o"></i>Cuando la impresi&oacute;n sea requerida de manera expresa por el receptor, en el momento de la emisi&oacute;n o despu&eacute;s.</li>
+                                            <li><i class="fa fa-check-square-o"></i>Cuando en la compra no se identifique al consumidor o usuario (consumidor final).</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.col-md-4 -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- End Testimonial Section -->
+         <!-- Template js -->
+        <script src="{{asset('recursos/inicio/js/jquery-2.1.1.min.js')}}"></script>
+        <script src="{{asset('recursos/inicio/bootstrap/js/bootstrap.min.js')}}"></script>
+        <script src="{{asset('recursos/inicio/js/jquery.appear.js')}}"></script>
+        <script src="{{asset('recursos/inicio/js/contact_me.js')}}"></script>
+        <script src="{{asset('recursos/inicio/js/jqBootstrapValidation.js')}}"></script>
+        <script src="{{asset('recursos/inicio/js/modernizr.custom.js')}}"></script>
+        <script src="{{asset('recursos/inicio/js/script.js')}}"></script>
+    </body>
+
+</html>
