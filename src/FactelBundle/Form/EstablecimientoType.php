@@ -24,6 +24,7 @@ class EstablecimientoType extends AbstractType {
                 ->add('nombre')
                 ->add('codigo')
                 ->add('urlweb')
+                ->add('nombreComercial')
                 ->add('direccion')
                 ->add('activo');
         if ($this->securityContext->isGranted("ROLE_ADMIN")) {

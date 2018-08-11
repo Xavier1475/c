@@ -139,8 +139,10 @@ class GuiaController extends Controller {
             $guia->ambiente = $entity->getAmbiente();
             $guia->tipoEmision = $entity->getTipoEmision();
             $guia->razonSocial = $emisor->getRazonSocial();
-            if ($emisor->getNombreComercial() != "") {
-                $guia->nombreComercial = $emisor->getNombreComercial();
+            if ($entity->getEstablecimiento()->getNombreComercial() != "") {
+                $guia->nombreComercial = $entity->getEstablecimiento()->getNombreComercial();
+            }else if($emisor->getNombreComercial() != ""){
+                 $guia->nombreComercial = $emisor->getNombreComercial();
             }
             $guia->ruc = $emisor->getRuc(); //[Ruc]
             $guia->codDoc = "06";

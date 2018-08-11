@@ -65,8 +65,8 @@ class NotaDebitoController extends Controller {
         } else {
             $idPtoEmision = $em->getRepository('FactelBundle:PtoEmision')->findIdPtoEmisionByUsuario($this->get("security.context")->gettoken()->getuser()->getId());
         }
-        $count = $em->getRepository('FactelBundle:NotaDebito')->cantidadNotasDebito($idPtoEmision,$emisorId);
-        $entities = $em->getRepository('FactelBundle:NotaDebito')->findNotasDebito($sSearch, $iDisplayStart, $iDisplayLength, $idPtoEmision,$emisorId);
+        $count = $em->getRepository('FactelBundle:NotaDebito')->cantidadNotasDebito($idPtoEmision, $emisorId);
+        $entities = $em->getRepository('FactelBundle:NotaDebito')->findNotasDebito($sSearch, $iDisplayStart, $iDisplayLength, $idPtoEmision, $emisorId);
         $totalDisplayRecords = $count;
 
         if ($sSearch != "") {
@@ -212,7 +212,7 @@ class NotaDebitoController extends Controller {
                     return $this->redirect($this->generateUrl('notadebito_new', array()));
                 }
                 $cliente = new \FactelBundle\Entity\Cliente();
-                
+
                 $emisor = $em->getRepository('FactelBundle:Emisor')->find($emisorId);
                 $cliente->setEmisor($emisor);
             }
@@ -286,7 +286,7 @@ class NotaDebitoController extends Controller {
             }
             $impuesto->setNotaDebito($entity);
             $entity->addImpuesto($impuesto);
-            
+
             if ($tipoImpuesto == "0") {
                 $subTotal0 = $subTotalSinImpuesto;
             } else if ($tipoImpuesto == "6") {
@@ -338,7 +338,7 @@ class NotaDebitoController extends Controller {
      */
     public function sendEmail(Request $request, $id) {
         $destinatario = $request->request->get("email");
-        
+
         $procesarComprobanteElectronico = new \ProcesarComprobanteElectronico();
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('FactelBundle:NotaDebito')->findNotaDebitoById($id);
@@ -371,8 +371,8 @@ class NotaDebitoController extends Controller {
         $comprobantePendiente->secuencial = $entity->getSecuencial();
         $comprobantePendiente->tipoEmision = $entity->getTipoEmision();
         $comprobantePendiente->enviarEmail = true;
-        if($destinatario != null && $destinatario != ''){
-          $comprobantePendiente->otrosDestinatarios = $destinatario;  
+        if ($destinatario != null && $destinatario != '') {
+            $comprobantePendiente->otrosDestinatarios = $destinatario;
         }
         $procesarComprobantePendiente = new \procesarComprobantePendiente();
         $procesarComprobantePendiente->comprobantePendiente = $comprobantePendiente;
@@ -446,8 +446,11 @@ class NotaDebitoController extends Controller {
             $notaDebito->ambiente = $entity->getAmbiente();
             $notaDebito->tipoEmision = $entity->getTipoEmision();
             $notaDebito->razonSocial = $emisor->getRazonSocial();
-            if ($emisor->getNombreComercial() != "") {
-                $notaDebito->nombreComercial = $emisor->getNombreComercial();
+
+            if ($entity->getEstablecimiento()->getNombreComercial() != "") {
+                $notaDebito->nombreComercial = $entity->getEstablecimiento()->getNombreComercial();
+            }else if($emisor->getNombreComercial() != ""){
+                 $notaDebito->nombreComercial = $emisor->getNombreComercial();
             }
             $notaDebito->ruc = $emisor->getRuc(); //[Ruc]
             $notaDebito->codDoc = "05";
@@ -547,10 +550,10 @@ class NotaDebitoController extends Controller {
                 if ($respuesta->return->estadoComprobante == "DEVUELTA" || $respuesta->return->estadoComprobante == "NO AUTORIZADO") {
                     $entity->setEnviarSiAutorizado(true);
                 }
-            }else if($entity->getEnviarSiAutorizado()){
+            } else if ($entity->getEnviarSiAutorizado()) {
                 $procesarComprobante->envioSRI = true;
                 $respuesta = $procesarComprobanteElectronico->procesarComprobante($procesarComprobante);
-                if($respuesta->return->estadoComprobante == "AUTORIZADO"){
+                if ($respuesta->return->estadoComprobante == "AUTORIZADO") {
                     $procesarComprobante->envioSRI = false;
                     $procesarComprobanteElectronico->procesarComprobante($procesarComprobante);
                 }

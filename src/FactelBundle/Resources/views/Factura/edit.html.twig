@@ -109,7 +109,7 @@
             <div class="control-group" id="emisor">
                 <div class="col-sm-12"><p class="text-center"><strong>Ruc:</strong> {{entity.emisor.ruc}}</p></div>
                 <div class="col-sm-12 col-md-6"><strong>Raz&oacute;n Social:</strong> {{entity.emisor.razonSocial}}</div>
-                <div class="col-sm-12 col-md-6"><strong>Nombre Comercial:</strong> {{entity.emisor.nombreComercial}}</div>
+                <div class="col-sm-12 col-md-6"><strong>Nombre Comercial:</strong> {%if entity.establecimiento.nombreComercial%}{{entity.establecimiento.nombreComercial}}{%else%}{{entity.emisor.nombreComercial}}{%endif%}</div>
                 <div class="col-sm-12 col-md-6"><strong>Contribuyente Especial:</strong> {{entity.emisor.contribuyenteEspecial}}</div>
                 <div class="col-sm-12 col-md-6"><strong>Obligado Contabilidad:</strong> {{entity.emisor.obligadoContabilidad}}</div>
                 <div class="col-sm-12 col-md-6"><strong>Direcci&oacute;n Matriz:</strong> {{entity.emisor.direccionMatriz}}</div>
@@ -246,12 +246,13 @@
                             <input type = "text" class= "hidden datos" value = "{{item.producto.id}},{{item.producto.codigoPrincipal}},{{item.producto.codigoAuxiliar}},{{item.producto.nombre}},{{item.precioUnitario}},{{codIVA}},{{tieneICE}},{{tieneIRBPNR}},{{tarifa}}">
                             <input type = "text" value = "{{item.cantidad}}" size= "4" name = "cantidad[{{item.producto.id}}]" id="producto{{item.producto.id}}" onchange = "calcularaValorTotalXProducto({{item.producto.id}})">
                         </td>
-                        <td> <input type = "text" class= "hidden" value = "{{item.nombre}}" id="nombreProducto{{item.producto.id}}" name = "nombreProducto[{{item.producto.id}}]">
+                        <td> 
                             <input type = "text" class= "hidden" value = "{{item.codigoProducto}}" id="codigoProducto{{item.producto.id}}" name = "codigoProducto[{{item.producto.id}}]">
                           {{item.codigoProducto}} 
                         </td>
                         <td>
-                            <input type = "text" class= "hidden" value = "{{item.producto.id}}" id="idProducto{{item.producto.id}}" name = "idProducto[{{item.producto.id}}]">  {{item.nombre}} 
+                            <input type = "text" class= "hidden" value = "{{item.producto.id}}" id="idProducto{{item.producto.id}}" name = "idProducto[{{item.producto.id}}]">
+                            <input type = "text" value = "{{item.nombre}}" id="nombreProducto{{item.producto.id}}" name = "nombreProducto[{{item.producto.id}}]">
                         </td>
                         <td>
                             <input type = "text" value = "{{item.precioUnitario}}" size= "4" name = "precio[{{item.producto.id}}]" id="precio{{item.producto.id}}" required onchange = "calcularaValorTotalXProducto({{item.producto.id}})">

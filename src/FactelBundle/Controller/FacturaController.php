@@ -140,8 +140,10 @@ class FacturaController extends Controller {
             $factura->ambiente = $entity->getAmbiente();
             $factura->tipoEmision = $entity->getTipoEmision();
             $factura->razonSocial = $emisor->getRazonSocial();
-            if ($emisor->getNombreComercial() != "") {
-                $factura->nombreComercial = $emisor->getNombreComercial();
+            if ($entity->getEstablecimiento()->getNombreComercial() != "") {
+                $factura->nombreComercial = $entity->getEstablecimiento()->getNombreComercial();
+            }else if($emisor->getNombreComercial() != ""){
+                 $factura->nombreComercial = $emisor->getNombreComercial();
             }
             $factura->ruc = $emisor->getRuc(); //[Ruc]
             $factura->codDoc = "01";

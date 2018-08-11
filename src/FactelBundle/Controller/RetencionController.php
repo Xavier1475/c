@@ -311,7 +311,9 @@ class RetencionController extends Controller {
             $retencion->ambiente = $entity->getAmbiente();
             $retencion->tipoEmision = $entity->getTipoEmision();
             $retencion->razonSocial = $emisor->getRazonSocial();
-            if ($emisor->getNombreComercial() != "") {
+            if ($entity->getEstablecimiento()->getNombreComercial() != "") {
+                $retencion->nombreComercial = $entity->getEstablecimiento()->getNombreComercial();
+            } else if ($emisor->getNombreComercial() != "") {
                 $retencion->nombreComercial = $emisor->getNombreComercial();
             }
             $retencion->ruc = $emisor->getRuc(); //[Ruc]
@@ -505,7 +507,7 @@ class RetencionController extends Controller {
      */
     public function sendEmail(Request $request, $id) {
         $destinatario = $request->request->get("email");
-        
+
         $procesarComprobanteElectronico = new \ProcesarComprobanteElectronico();
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('FactelBundle:Retencion')->findRetencionById($id);
@@ -538,8 +540,8 @@ class RetencionController extends Controller {
         $comprobantePendiente->secuencial = $entity->getSecuencial();
         $comprobantePendiente->tipoEmision = $entity->getTipoEmision();
         $comprobantePendiente->enviarEmail = true;
-        if($destinatario != null && $destinatario != ''){
-          $comprobantePendiente->otrosDestinatarios = $destinatario;  
+        if ($destinatario != null && $destinatario != '') {
+            $comprobantePendiente->otrosDestinatarios = $destinatario;
         }
         $procesarComprobantePendiente = new \procesarComprobantePendiente();
         $procesarComprobantePendiente->comprobantePendiente = $comprobantePendiente;
@@ -758,18 +760,18 @@ class RetencionController extends Controller {
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
      * @return BinaryFileResponse
      * @Route("/descarga/ayuda", name="retencion_help")
      */
-    public function downloadAction()
-    {
-        $path = $this->get('kernel')->getRootDir(). "/../web/upload/"; 
-        $file = $path.'Ayuda Codigos Retenciones.xlsx'; // Path to the file on the server
+    public function downloadAction() {
+        $path = $this->get('kernel')->getRootDir() . "/../web/upload/";
+        $file = $path . 'Ayuda Codigos Retenciones.xlsx'; // Path to the file on the server
         $response = new BinaryFileResponse($file);
 
         // Give the file a name:
-        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT,'Ayuda Codigos Retenciones.xlsx');
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'Ayuda Codigos Retenciones.xlsx');
 
         return $response;
     }

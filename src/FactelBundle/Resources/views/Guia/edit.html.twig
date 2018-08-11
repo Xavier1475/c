@@ -109,7 +109,7 @@
             <div class="control-group" id="emisor">
                 <div class="col-sm-12"><p class="text-center"><strong>Ruc:</strong> {{entity.emisor.ruc}}</p></div>
                 <div class="col-sm-12 col-md-6"><strong>Raz&oacute;n Social:</strong> {{entity.emisor.razonSocial}}</div>
-                <div class="col-sm-12 col-md-6"><strong>Nombre Comercial:</strong> {{entity.emisor.nombreComercial}}</div>
+                <div class="col-sm-12 col-md-6"><strong>Nombre Comercial:</strong> {%if entity.establecimiento.nombreComercial%}{{entity.establecimiento.nombreComercial}}{%else%}{{entity.emisor.nombreComercial}}{%endif%}</div>
                 <div class="col-sm-12 col-md-6"><strong>Contribuyente Especial:</strong> {{entity.emisor.contribuyenteEspecial}}</div>
                 <div class="col-sm-12 col-md-6"><strong>Obligado Contabilidad:</strong> {{entity.emisor.obligadoContabilidad}}</div>
                 <div class="col-sm-12 col-md-6"><strong>Direcci&oacute;n Matriz:</strong> {{entity.emisor.direccionMatriz}}</div>

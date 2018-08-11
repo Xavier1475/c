@@ -85,6 +85,14 @@ class Establecimiento {
     /**
      * @var string
      *
+     * @ORM\Column(name="nombreComercial", type="string", length=255,nullable=TRUE)
+     */
+    protected $nombreComercial;
+    
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="direccion", type="string", length=300, nullable=TRUE)
      */
     protected $direccion;
@@ -430,5 +438,29 @@ class Establecimiento {
     public function getGuias()
     {
         return $this->guias;
+    }
+
+    /**
+     * Set nombreComercial
+     *
+     * @param string $nombreComercial
+     *
+     * @return Establecimiento
+     */
+    public function setNombreComercial($nombreComercial)
+    {
+        $this->nombreComercial = $nombreComercial;
+
+        return $this;
+    }
+
+    /**
+     * Get nombreComercial
+     *
+     * @return string
+     */
+    public function getNombreComercial()
+    {
+        return $this->nombreComercial;
     }
 }

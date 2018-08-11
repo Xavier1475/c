@@ -103,7 +103,7 @@
             <div class="control-group" id="emisor">
                 <div class="col-sm-12"><p class="text-center"><strong>Ruc:</strong> {{pto[0].establecimiento.emisor.ruc}}</p></div>
                 <div class="col-sm-12 col-md-6"><strong>Raz&oacute;n Social:</strong> {{pto[0].establecimiento.emisor.razonSocial}}</div>
-                <div class="col-sm-12 col-md-6"><strong>Nombre Comercial:</strong> {{pto[0].establecimiento.emisor.nombreComercial}}</div>
+                <div class="col-sm-12 col-md-6"><strong>Nombre Comercial:</strong> {%if pto[0].establecimiento.nombreComercial%}{{pto[0].establecimiento.nombreComercial}}{%else%}{{pto[0].establecimiento.emisor.nombreComercial}}{%endif%}</div>
                 <div class="col-sm-12 col-md-6"><strong>Contribuyente Especial:</strong> {{pto[0].establecimiento.emisor.contribuyenteEspecial}}</div>
                 <div class="col-sm-12 col-md-6"><strong>Obligado Contabilidad:</strong> {{pto[0].establecimiento.emisor.obligadoContabilidad}}</div>
                 <div class="col-sm-12 col-md-6"><strong>Direcci&oacute;n Matriz:</strong> {{pto[0].establecimiento.emisor.direccionMatriz}}</div>
@@ -410,7 +410,8 @@
                                     + '<td><input type = "text" class= "hidden datos" value = "' + aData + '">' +
                                     '<input type = "text" value = "1" size= "4" name = "cantidad[' + aData[0] + ']" id="producto' + aData[0] + '" onchange = "calcularaValorTotalXProducto(' + aData[0] + ')"></td>'
                                     + '<td>' + aData[1] + '<input type = "text" class= "hidden" value = "' + aData[1] + '" id="codigoProducto' + aData[0] + '" name = "codigoProducto[' + aData[0] + ']"><input type = "text" class= "hidden" value = "' + aData[3] + '" id="nombreProducto' + aData[0] + '" name = "nombreProducto[' + aData[0] + ']"></td>'
-                                    + '<td><input type = "text" class= "hidden" value = "' + aData[0] + '" id="idProducto' + aData[0] + '" name = "idProducto[' + aData[0] + ']">' + aData[3] + '</td>'
+                                    + '<td><input type = "text" class= "hidden" value = "' + aData[0] + '" id="idProducto' + aData[0] + '" name = "idProducto[' + aData[0] + ']">'
+                                    + '<input type = "text" value = "' + aData[3] + '" id="nombreProducto' + aData[0] + '" name = "nombreProducto[' + aData[0] + ']"></td>'
                                     + '<td><input type = "text" value = "' + aData[4] + '" size= "4" name = "precio[' + aData[0] + ']" id="precio' + aData[0] + '" required onchange = "calcularaValorTotalXProducto(' + aData[0] + ')"></td>'
                                     + '<td><input type = "text" value = "0" size= "4" name = "descuento[' + aData[0] + ']" id="descuento' + aData[0] + '" required onchange = "calcularaValorTotalXProducto(' + aData[0] + ')"></td>'
                                     + '<td id ="total' + aData[0] + '"></td>'

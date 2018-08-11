@@ -139,8 +139,10 @@ class NotaCreditoController extends Controller {
             $notaCredito->ambiente = $entity->getAmbiente();
             $notaCredito->tipoEmision = $entity->getTipoEmision();
             $notaCredito->razonSocial = $emisor->getRazonSocial();
-            if ($emisor->getNombreComercial() != "") {
-                $notaCredito->nombreComercial = $emisor->getNombreComercial();
+             if ($entity->getEstablecimiento()->getNombreComercial() != "") {
+                $notaCredito->nombreComercial = $entity->getEstablecimiento()->getNombreComercial();
+            }else if($emisor->getNombreComercial() != ""){
+                 $notaCredito->nombreComercial = $emisor->getNombreComercial();
             }
             $notaCredito->ruc = $emisor->getRuc(); //[Ruc]
             $notaCredito->codDoc = "04";
