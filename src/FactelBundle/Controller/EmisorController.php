@@ -18,12 +18,6 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
  */
 class EmisorController extends Controller {
 
-    public function getUploadRootDir() {
-        // the absolute directory path where uploaded
-        // documents should be saved
-        return 'D:/Directorio';
-    }
-
     /**
      * Lists all Emisor entities.
      *
@@ -66,11 +60,11 @@ class EmisorController extends Controller {
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $fullDirArchivo = $this->getUploadRootDir() . "/" . $entity->getRuc();
+            $fullDirArchivo = $form['dirDocAutorizados']->getData();
             if (!is_dir($fullDirArchivo)) {
                 mkdir($fullDirArchivo, 0777, true);
             }
-            $dirAutorizado = $fullDirArchivo . "/Autorizados";
+            $dirAutorizado = $fullDirArchivo;
             if (!is_dir($dirAutorizado)) {
                 mkdir($dirAutorizado, 0777, true);
             }
@@ -223,11 +217,11 @@ class EmisorController extends Controller {
 
         if ($editForm->isValid()) {
 
-            $fullDirArchivo = $this->getUploadRootDir() . "/" . $entity->getRuc();
+            $fullDirArchivo = $editForm['dirDocAutorizados']->getData();
             if (!is_dir($fullDirArchivo)) {
                 mkdir($fullDirArchivo, 0777, true);
             }
-            $dirAutorizado = $fullDirArchivo . "/Autorizados";
+            $dirAutorizado = $fullDirArchivo;
             if (!is_dir($dirAutorizado)) {
                 mkdir($dirAutorizado, 0777, true);
             }
