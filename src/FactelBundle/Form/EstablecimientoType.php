@@ -45,6 +45,11 @@ class EstablecimientoType extends AbstractType {
                             ->setParameter("userId", $this->securityContext->gettoken()->getuser()->getId());
         }));
         }
+        $builder->add('logo', 'file', array(
+            'data_class' => 'Symfony\Component\HttpFoundation\File\File',
+            'property_path' => 'logo',
+            'required' => false
+        ));
     }
 
     /**

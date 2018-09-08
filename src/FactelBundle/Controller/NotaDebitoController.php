@@ -349,7 +349,11 @@ class NotaDebitoController extends Controller {
         $configApp->dirFirma = $emisor->getDirFirma();
         $configApp->passFirma = $emisor->getPassFirma();
         $configApp->dirAutorizados = $emisor->getDirDocAutorizados();
-        $configApp->dirLogo = $emisor->getDirLogo();
+        if ($entity->getEstablecimiento()->getDirLogo() != "") {
+            $configApp->dirLogo = $entity->getEstablecimiento()->getDirLogo();
+        } else {
+            $configApp->dirLogo = $emisor->getDirLogo();
+        }
 
         $configCorreo = new \configCorreo();
         $configCorreo->correoAsunto = "Nuevo Comprobante Electrónico";
@@ -449,8 +453,8 @@ class NotaDebitoController extends Controller {
 
             if ($entity->getEstablecimiento()->getNombreComercial() != "") {
                 $notaDebito->nombreComercial = $entity->getEstablecimiento()->getNombreComercial();
-            }else if($emisor->getNombreComercial() != ""){
-                 $notaDebito->nombreComercial = $emisor->getNombreComercial();
+            } else if ($emisor->getNombreComercial() != "") {
+                $notaDebito->nombreComercial = $emisor->getNombreComercial();
             }
             $notaDebito->ruc = $emisor->getRuc(); //[Ruc]
             $notaDebito->codDoc = "05";

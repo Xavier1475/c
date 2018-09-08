@@ -122,8 +122,12 @@ class FacturaController extends Controller {
         $configApp->dirFirma = $emisor->getDirFirma();
         $configApp->passFirma = $emisor->getPassFirma();
         $configApp->dirAutorizados = $emisor->getDirDocAutorizados();
-        $configApp->dirLogo = $emisor->getDirLogo();
-
+        
+        if ($entity->getEstablecimiento()->getDirLogo() != "") {
+            $configApp->dirLogo = $entity->getEstablecimiento()->getDirLogo();
+        }else{
+          $configApp->dirLogo = $emisor->getDirLogo();  
+        }
         $configCorreo = new \configCorreo();
         $configCorreo->correoAsunto = "Nuevo Comprobante Electrónico";
         $configCorreo->correoHost = $emisor->getServidorCorreo();
@@ -142,8 +146,8 @@ class FacturaController extends Controller {
             $factura->razonSocial = $emisor->getRazonSocial();
             if ($entity->getEstablecimiento()->getNombreComercial() != "") {
                 $factura->nombreComercial = $entity->getEstablecimiento()->getNombreComercial();
-            }else if($emisor->getNombreComercial() != ""){
-                 $factura->nombreComercial = $emisor->getNombreComercial();
+            } else if ($emisor->getNombreComercial() != "") {
+                $factura->nombreComercial = $emisor->getNombreComercial();
             }
             $factura->ruc = $emisor->getRuc(); //[Ruc]
             $factura->codDoc = "01";
@@ -467,7 +471,7 @@ class FacturaController extends Controller {
      */
     public function sendEmail(Request $request, $id) {
         $destinatario = $request->request->get("email");
-        
+
         $procesarComprobanteElectronico = new \ProcesarComprobanteElectronico();
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('FactelBundle:Factura')->findFacturaById($id);
@@ -500,8 +504,8 @@ class FacturaController extends Controller {
         $comprobantePendiente->secuencial = $entity->getSecuencial();
         $comprobantePendiente->tipoEmision = $entity->getTipoEmision();
         $comprobantePendiente->enviarEmail = true;
-        if($destinatario != null && $destinatario != ''){
-          $comprobantePendiente->otrosDestinatarios = $destinatario;  
+        if ($destinatario != null && $destinatario != '') {
+            $comprobantePendiente->otrosDestinatarios = $destinatario;
         }
         $procesarComprobantePendiente = new \procesarComprobantePendiente();
         $procesarComprobantePendiente->comprobantePendiente = $comprobantePendiente;

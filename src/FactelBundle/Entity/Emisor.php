@@ -868,7 +868,7 @@ class Emisor {
      *
      * @return User
      */
-    public function setFirma($logo) {
+    public function setLogo($logo) {
         $this->logo = $logo;
 
         return $this;
@@ -890,7 +890,7 @@ class Emisor {
      *
      * @return User
      */
-    public function setLogo($firma) {
+    public function setFirma($firma) {
         $this->firma = $firma;
 
         return $this;

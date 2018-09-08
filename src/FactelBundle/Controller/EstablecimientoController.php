@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use FactelBundle\Entity\Establecimiento;
 use FactelBundle\Form\EstablecimientoType;
 use JMS\SecurityExtraBundle\Annotation\Secure;
+
 /**
  * Establecimiento controller.
  *
@@ -32,11 +33,10 @@ class EstablecimientoController extends Controller {
             $entities = $em->getRepository('FactelBundle:Establecimiento')->findEstablecimientos();
         } else {
             $user = $this->get("security.context")->getToken()->getUser();
-            $entities = $em->getRepository('FactelBundle:Establecimiento')->findEstablecimientosEmisor($user->getEmisor()->getId());       
-            
+            $entities = $em->getRepository('FactelBundle:Establecimiento')->findEstablecimientosEmisor($user->getEmisor()->getId());
         }
 
-        
+
         foreach ($entities as $entity) {
             $deleteForms[$entity[0]->getId()] = $this->createDeleteForm($entity[0]->getId())->createView();
         }
@@ -61,6 +61,12 @@ class EstablecimientoController extends Controller {
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            $fullDirArchivo = $entity->getEmisor()->getDirDocAutorizados();
+            $newLogo = $form['logo']->getData();
+            $newLogo->move($fullDirArchivo, $newLogo->getClientOriginalName());
+            $entity->setDirLogo($fullDirArchivo . "/" . $newLogo->getClientOriginalName());
+
             $em->persist($entity);
             $em->flush();
 
@@ -198,6 +204,11 @@ class EstablecimientoController extends Controller {
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            $fullDirArchivo = $entity->getEmisor()->getDirDocAutorizados();
+            $newLogo = $editForm['logo']->getData();
+            $newLogo->move($fullDirArchivo, $newLogo->getClientOriginalName());
+            $entity->setDirLogo($fullDirArchivo . "/" . $newLogo->getClientOriginalName());
+            $em->persist($entity);
             $em->flush();
 
             return $this->redirect($this->generateUrl('establecimiento_show', array('id' => $id)));

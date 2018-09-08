@@ -68,7 +68,7 @@ class ProductoRepository extends EntityRepository {
                             $qb->expr()->like('producto.nombre', $qb->expr()->literal('%' . $search . '%'))
             );
         }
-        $qb->where('emisor.id = :idEmisor');
+        $qb->andwhere('emisor.id = :idEmisor');
         $qb->setParameter("idEmisor", $idEmisor);
         return $qb->getQuery()->getResult();
     }

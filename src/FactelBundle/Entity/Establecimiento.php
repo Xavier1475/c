@@ -4,6 +4,7 @@ namespace FactelBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Establecimiento
@@ -88,8 +89,7 @@ class Establecimiento {
      * @ORM\Column(name="nombreComercial", type="string", length=255,nullable=TRUE)
      */
     protected $nombreComercial;
-    
-    
+
     /**
      * @var string
      *
@@ -103,6 +103,19 @@ class Establecimiento {
      * @ORM\Column(name="activo", type="boolean", nullable=TRUE)
      */
     protected $activo;
+
+    /**
+     * @Assert\File( maxSize = "1024k", mimeTypesMessage = "Favor subir un logo valido")
+     * @var type 
+     */
+    protected $logo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="dirLogo", type="string", length=200)
+     */
+    protected $dirLogo;
 
     /**
      * Get id
@@ -405,7 +418,6 @@ class Establecimiento {
         return $this->urlweb;
     }
 
-
     /**
      * Add guia
      *
@@ -413,8 +425,7 @@ class Establecimiento {
      *
      * @return Establecimiento
      */
-    public function addGuia(\FactelBundle\Entity\Guia $guia)
-    {
+    public function addGuia(\FactelBundle\Entity\Guia $guia) {
         $this->guias[] = $guia;
 
         return $this;
@@ -425,8 +436,7 @@ class Establecimiento {
      *
      * @param \FactelBundle\Entity\Guia $guia
      */
-    public function removeGuia(\FactelBundle\Entity\Guia $guia)
-    {
+    public function removeGuia(\FactelBundle\Entity\Guia $guia) {
         $this->guias->removeElement($guia);
     }
 
@@ -435,8 +445,7 @@ class Establecimiento {
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getGuias()
-    {
+    public function getGuias() {
         return $this->guias;
     }
 
@@ -447,8 +456,7 @@ class Establecimiento {
      *
      * @return Establecimiento
      */
-    public function setNombreComercial($nombreComercial)
-    {
+    public function setNombreComercial($nombreComercial) {
         $this->nombreComercial = $nombreComercial;
 
         return $this;
@@ -459,8 +467,54 @@ class Establecimiento {
      *
      * @return string
      */
-    public function getNombreComercial()
-    {
+    public function getNombreComercial() {
         return $this->nombreComercial;
+    }
+    
+     /**
+     * Get fotoPerfil
+     *
+     * @return string
+     */
+    public function getLogo() {
+        return $this->logo;
+    }
+
+    /**
+     * Set fotoPerfil
+     *
+     * @param string $fotoPerfil
+     *
+     * @return User
+     */
+    public function setLogo($logo) {
+        $this->logo = $logo;
+
+        return $this;
+    }
+
+
+    /**
+     * Set dirLogo
+     *
+     * @param string $dirLogo
+     *
+     * @return Establecimiento
+     */
+    public function setDirLogo($dirLogo)
+    {
+        $this->dirLogo = $dirLogo;
+
+        return $this;
+    }
+
+    /**
+     * Get dirLogo
+     *
+     * @return string
+     */
+    public function getDirLogo()
+    {
+        return $this->dirLogo;
     }
 }

@@ -121,7 +121,11 @@ class GuiaController extends Controller {
         $configApp->dirFirma = $emisor->getDirFirma();
         $configApp->passFirma = $emisor->getPassFirma();
         $configApp->dirAutorizados = $emisor->getDirDocAutorizados();
-        $configApp->dirLogo = $emisor->getDirLogo();
+        if ($entity->getEstablecimiento()->getDirLogo() != "") {
+            $configApp->dirLogo = $entity->getEstablecimiento()->getDirLogo();
+        }else{
+          $configApp->dirLogo = $emisor->getDirLogo();  
+        }
 
         $configCorreo = new \configCorreo();
         $configCorreo->correoAsunto = "Nuevo Comprobante Electrónico";
