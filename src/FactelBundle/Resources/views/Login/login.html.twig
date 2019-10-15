@@ -4,7 +4,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Iniciar Sesi&oacute;n</title>
+        <title>FACTURACION ELECTRONICA UIO</title>
         <link href="{{asset('recursos/framework/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
         <link href="{{asset('recursos/css/login.css')}}" rel="stylesheet">
     </head>
@@ -16,7 +16,7 @@
                 <div class="col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
                     <div class="login-box clearfix animated flipInY">
                         <div class="login-logo">
-                            <img src="{{asset('recursos/img/facilfact-logo.png')}}" alt="FacilFact" />
+                            <img src="{{asset('recursos/img/LOGO-TECHCOMP.png')}}" alt="FacilFact" />
                         </div>
                    {% if error %}
                         <div class="alert alert-danger alert-dismissable">
@@ -30,19 +30,19 @@
                             <form id="loginform" name = "loginForm" class="form-horizontal" role="form" action="{{ path('login_check') }}" method='POST'>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                    <input id="login-username" type="text" class="form-control" name="_username" value="{{ last_username }}" placeholder="Usuario" required>                                        
+                                    <input id="login-username" type="text" class="form-control" name="_username" value="{{ last_username }}" placeholder="USUARIO" required>                                        
                                 </div>
 
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                    <input id="login-password" type="password" class="form-control" name="_password" placeholder="Contraseña" required>
+                                    <input id="login-password" type="password" class="form-control" name="_password" placeholder="CONTRASEÑA" required>
                                 </div>
 
                                 <div  class="form-group">
                                     <!-- Button -->
 
                                     <div class="col-sm-12 controls">
-                                        <button type="submit" class="btn btn-success">Iniciar Sesi&oacute;n</button>
+                                        <button type="submit" class="btn btn-success">INGRESAR</button>
                                     </div>
                                 </div>
                             </form>     	

@@ -7,16 +7,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
+
 use FactelBundle\Entity\Factura;
+use FactelBundle\Entity\Cliente;
 use FactelBundle\Entity\FacturaHasProducto;
 use FactelBundle\Entity\Impuesto;
 use FactelBundle\Entity\CampoAdicional;
 use FactelBundle\Form\FacturaType;
+use FactelBundle\Form\ClienteType;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\Response;
 use FactelBundle\Util;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 
 require_once 'ProcesarComprobanteElectronico.php';
+require_once 'reader.php';
 
 /**
  * Factura controller.
@@ -36,15 +44,16 @@ class FacturaController extends Controller {
 
         return array();
     }
-
     /**
      * Lists all Factura entities.
      *
-     * @Route("/facturas", name="all_factura")
+     * @Route("/pagocli", name="pago")
      * @Secure(roles="ROLE_EMISOR")
      * @Method("GET")
      */
-    public function facturasAction() {
+    public function indexPago() {
+       /* $iDisplayStart="";
+        $iDisplayLength="";
         if (isset($_GET['sEcho'])) {
             $sEcho = $_GET['sEcho'];
         }
@@ -90,8 +99,786 @@ class FacturaController extends Controller {
         );
 
         $post_data = json_encode($arr);
+        */
+
+        //return new Response($post_data, 200, array('Content-Type' => 'application/json'));
+        
+        $usu= new Factura();
+        
+        $form= $this->createFormBuilder($usu)
+                    //->setAction($this->generateUrl('save_animal'))
+                    ->add('cliente', 'entity',[
+                        'class'=> 'FactelBundle:Cliente',
+                        'property'=>'nombre',
+                    ])
+                    /*
+                    ->add('nombre','entity',array(
+                        'class'=> Cliente::class,
+                        'placeholder'=>'',
+                        'choices'=>$cliente
+                    ))*/
+
+                    ->add('formaPago', 'choice', array(
+                        'label'=>'Formas de Pago',
+                        'choices' => array(
+                            '1'=>'Efectivo',
+                            '2'=>'Deposito',
+                            '3'=>'Cheque',
+                            '4'=>'Transferencia',
+                            '5'=>'Tarjeta de Credito',
+                            '6'=>'Otro'
+                    )))
+                    ->add('secuencial', 'text', array(
+                        'label' => 'Nro tarjeta',
+                        'required' => true,
+                        
+                    )
+                        
+                    )
+                    ->add('nroCuenta','text',array(
+                        'label'=>'Nro Cuenta',
+                        
+                    ))
+                    ->add('banco','text',array(
+                        'label'=>'Banco',
+                        'required' => true,
+                    ))   
+
+                    ->add('ctaContable','text',array(
+                        'label'=>'Cuenta Contable',
+                        'required' => true,
+                    ))
+                    ->add('ctaContable','text',array(
+                        'label'=>'Cuenta Contable',
+                        'required' => true,
+                    ))
+                    ->add('totalSinImpuestos', 'text', array(
+                        'label'=>'Valor',
+                        'required' => true,
+                        'post_max_size_message'=>'6'
+                        
+                        )
+                         
+                    )
+                    ->add('totalDescuento', 'text', array(
+                        'label'=>'Descuento',
+                        
+                    ))
+                    
+                    ->getForm();
+                    $dato=$form->getData();
+                    $deleteForms = array();
+                    /*$personas = $this->getDoctrine()
+                    ->getRepository(Factura::class)
+                    ->findAll();*/
+                    //$r=$form->setData($dato['totalSinImpuestos']);
+                    $personas = $this->getDoctrine()
+                    ->getRepository(Factura::class)
+                    ->findCuentas();
+                        $fact= new Factura();
+                        $s=$fact->getFechaVencimiento();
+                    /*$fact = $this->getDoctrine()
+                    ->getRepository(Factura::class)
+                    ->findCuentas();
+                    $sum=0;
+                    foreach ($fact as $a) {
+                        //$deleteForms[$entity->getId()] = $this->createDeleteForm($entity->getId())->createView();
+                        $sum=0;
+                        foreach($a->abono as $r){
+                            $sum += $r->number;
+                        }
+                        $a->sum = $sum;
+                    }*/
+
+                return $this->render(
+                        'FactelBundle:PagoCliente:index.html.twig',array(
+                            'form' => $form->createView(),
+                            'entities' => $personas,
+                            'deleteForms' => $deleteForms,
+                            
+                        ));
+    }
+    
+    /*
+     * Lists all Factura entities.
+     *
+     * @Route("/pagocli/{sal}/sald", name="saldo")
+     * @Secure(roles="ROLE_EMISOR")
+     * @Method("GET")
+     */
+    public function saldoact($sal){
+        $valor=$this->getDoctrine()
+                    ->getRepository(Factura::class)
+                    ->findSaldo($sal);
+
+         return $this->render('FactelBundle:PagoCliente:index.html.twig',array(
+             'valor'=>$valor
+         ));           
+    }
+    /**
+     * @Route("/pagocli/{id}/edit", name="form_edit")
+     * @Secure(roles="ROLE_ADMIN, ROLE_EMISOR_ADMIN")
+     * @Method("GET")
+     * @Template()
+     */
+    public function editForm($id)
+        
+    {
+        $valor=$this->getDoctrine()
+                    ->getRepository(Factura::class)
+                    ->findSaldo($id);
+
+         return $this->render('FactelBundle:PagoCliente:edit.html.twig',array( 
+             'valor'=>$valor
+         ));
+        /*
+        $em = $this->getDoctrine()
+        ->getRepository(Factura::class)->find($id);
+        
+
+        //$entity = $em->getRepository(Factura::class)->find($id);
+        
+
+        $editForm = $this->createEditForm($em);
+        $deleteForm = $this->createDeleteForm($em);
+
+        return array(
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        );
+        $form = $this->createForm(FacturaType::class, $entity, array(
+            'action' => $this->generateUrl('factura_edit', array('id' => $entity->getId())),
+            'method' => 'PUT',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Update'));
+
+        return $form;*/
+        
+    }
+              
+    
+    /**
+     * Lists all Factura entities.
+     *
+     * @Route("/pagocli/{id}/deleteform", name="flormu")
+     * @Secure(roles="ROLE_ADMIN, ROLE_EMISOR_ADMIN")
+     * @Method("GET")
+     * @Template()
+     */
+    
+    public function formularioPagos(Factura $id){
+       /*$em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('FactelBundle:Establecimiento')->findCuentasId($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Establecimiento entity.');
+        }
+
+        $deleteForm = $this->createDeleteForm($id);
+
+        return $this->render(
+            'FactelBundle:PagoCliente:delete.html.twig', array(
+            'entity' => $entity
+            ,
+            'delete_form' => $deleteForm->createView(),
+        ));*/
+        $doctrine = $this->getDoctrine();
+        //Cargar entityManager
+        $em = $doctrine->getManager();
+        //CArgar el repositorio
+
+        if($id && is_object($id)){
+            $em->remove($id);
+            $em->flush();
+            $m="<script>alert('Cta Borrada exitosamente')</script>";
+
+            
+        }else{
+            $m="<script>alert('No se pudo borrar la Cta')</script>";
+
+        }
+        
+        
+        return $this->redirect($this->generateUrl('pago'));
+        
+
+        }
+ 
+    /**
+     * Lists all Factura entities.
+     *
+     * @Route("/facturas", name="all_factura")
+     * @Secure(roles="ROLE_EMISOR")
+     * @Method("GET")
+     */
+    public function facturasAction() {
+        $iDisplayStart="";
+        $iDisplayLength="";
+        if (isset($_GET['sEcho'])) {
+            $sEcho = $_GET['sEcho'];
+        }
+        if (isset($_GET['iDisplayStart'])) {
+            $iDisplayStart = intval($_GET['iDisplayStart']);
+        }
+        if (isset($_GET['iDisplayLength'])) {
+            $iDisplayLength = intval($_GET['iDisplayLength']);
+        }
+        $sSearch = "";
+        if (isset($_GET['sSearch'])) {
+            $sSearch = $_GET['sSearch'];
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $emisorId = null;
+        $idPtoEmision = null;
+        if ($this->get("security.context")->isGranted("ROLE_EMISOR_ADMIN")) {
+            $emisorId = $em->getRepository('FactelBundle:User')->findEmisorId($this->get("security.context")->gettoken()->getuser()->getId());
+        } else {
+            $idPtoEmision = $em->getRepository('FactelBundle:PtoEmision')->findIdPtoEmisionByUsuario($this->get("security.context")->gettoken()->getuser()->getId());
+        }
+        $count = $em->getRepository('FactelBundle:Factura')->cantidadFacturas($idPtoEmision, $emisorId);
+        $entities = $em->getRepository('FactelBundle:Factura')->findFacturas($sSearch, $iDisplayStart, $iDisplayLength, $idPtoEmision, $emisorId);
+        $totalDisplayRecords = $count;
+
+        if ($sSearch != "") {
+            $totalDisplayRecords = count($em->getRepository('FactelBundle:Factura')->findFacturas($sSearch, $iDisplayStart, 1000000, $idPtoEmision, $emisorId));
+        }
+        $facturaArray = array();
+        $i = 0;
+        foreach ($entities as $entity) {
+            $fechaAutorizacion = "";
+            $fechaAutorizacion = $entity->getFechaAutorizacion() != null ? $entity->getFechaAutorizacion()->format("d/m/Y H:i:s") : "";
+            $facturaArray[$i] = [$entity->getId(), $entity->getEstablecimiento()->getCodigo() . "-" . $entity->getPtoEmision()->getCodigo() . "-" . $entity->getSecuencial(), $entity->getCliente()->getNombre(), $entity->getFechaEmision()->format("d/m/Y"), $fechaAutorizacion, $entity->getValorTotal(), $entity->getEstado()];
+            $i++;
+        }
+
+        $arr = array(
+            "iTotalRecords" => (int) $count,
+            "iTotalDisplayRecords" => (int) $totalDisplayRecords,
+            'aaData' => $facturaArray
+        );
+
+        $post_data = json_encode($arr);
+        
 
         return new Response($post_data, 200, array('Content-Type' => 'application/json'));
+
+       
+    }
+
+    /**
+     *
+     * @Route("/cargar", name="factura_create_masivo")
+     * @Method("POST")
+     * @Secure(roles="ROLE_EMISOR_ADMIN")
+     */
+    public function createFacturaMasivaAction(Request $request) {
+        $form = $this->createFacturaMasivaForm();
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $emisor = new \FactelBundle\Entity\Emisor();
+            $ptoEmision = $em->getRepository('FactelBundle:PtoEmision')->findPtoEmisionEstabEmisorByUsuario($this->get("security.context")->gettoken()->getuser()->getId());
+            $establecimiento = $ptoEmision[0]->getEstablecimiento();
+            $emisor = $establecimiento->getEmisor();
+
+            $newFile = $form['Facturas']->getData();
+            $newFile->move($this->getUploadRootDir(), $newFile->getClientOriginalName());
+            $data = new Spreadsheet_Excel_Reader();
+            $data->Spreadsheet_Excel_Reader();
+            $data->setOutputEncoding('CP1251');
+            $productoCreado = 0;
+            $productoActualizado = 0;
+
+            $data->read($this->getUploadRootDir() . '/' . $newFile->getClientOriginalName());
+            for ($i = 2; $i <= $data->sheets[0]['numRows']; $i++) {
+                if (isset($data->sheets[0]['cells'][$i][1]) && isset($data->sheets[0]['cells'][$i][2]) && isset($data->sheets[0]['cells'][$i][3]) && isset($data->sheets[0]['cells'][$i][4]) && isset($data->sheets[0]['cells'][$i][5]) && isset($data->sheets[0]['cells'][$i][6]) && isset($data->sheets[0]['cells'][$i][7]) && isset($data->sheets[0]['cells'][$i][8])) {
+                    $codigoPrincipal = $data->sheets[0]['cells'][$i][3];
+                    $producto = $em->getRepository('FactelBundle:Producto')->findOneBy(array("codigoPrincipal" => $codigoPrincipal, "emisor" => $emisor->getId()));
+
+                    $entity = new Factura();
+                    $fechaEmision = date("d/m/Y");
+                    $entity->setEstado("CREADA");
+                    $entity->setAmbiente($emisor->getAmbiente());
+                    $entity->setTipoEmision($emisor->getTipoEmision());
+                    $secuencial = $ptoEmision[0]->getSecuencialFactura();
+                    while (strlen($secuencial) < 9) {
+                        $secuencial = "0" . $secuencial;
+                    }
+                    $entity->setSecuencial($secuencial);
+                    $entity->setClaveAcceso($this->claveAcceso($entity, $emisor, $establecimiento, $ptoEmision[0], $fechaEmision));
+                    $fechaModificada = str_replace("/", "-", $fechaEmision);
+                    $fecha = new \DateTime($fechaModificada);
+                    $entity->setFechaEmision($fecha);
+                    $identificacion = $data->sheets[0]['cells'][$i][7];
+                    $cliente = $em->getRepository('FactelBundle:Cliente')->findOneBy(array("identificacion" => $identificacion, "emisor" => $emisor->getId()));
+                    if ($cliente == null) {
+                        $cliente = new \FactelBundle\Entity\Cliente();
+                        $cliente->setEmisor($emisor);
+                    }
+                    $cliente->setNombre($data->sheets[0]['cells'][$i][8]);
+                    $cliente->setTipoIdentificacion($data->sheets[0]['cells'][$i][6]);
+                    $cliente->setIdentificacion($identificacion);
+                    if (isset($data->sheets[0]['cells'][$i][9])) {
+                        $cliente->setCorreoElectronico($data->sheets[0]['cells'][$i][9]);
+                    }
+                    $em->persist($cliente);
+                    $em->flush();
+
+                    $entity->setCliente($cliente);
+                    $entity->setEmisor($emisor);
+                    $entity->setEstablecimiento($establecimiento);
+                    $entity->setPtoEmision($ptoEmision[0]);
+
+                    $subTotalSinImpuesto = 0;
+                    $subTotal12 = 0;
+                    $subTotal0 = 0;
+                    $subTotaNoObjeto = 0;
+                    $subTotaExento = 0;
+                    $descuento = 0;
+                    $ice = 0;
+                    $irbpnr = 0;
+                    $iva12 = 0;
+                    $propina = 0;
+                    $valorTotal = 0;
+                    $entity->setFormaPago($data->sheets[0]['cells'][$i][2]);
+                    $idFactura = $data->sheets[0]['cells'][$i][1];
+                    $pos = 0;
+                    $productosId = array();
+                    $cantidadArray = array();
+                    $descuentoArray = array();
+                    $error = false;
+                    while (true && isset($data->sheets[0]['cells'][$i][1])) {
+                        if (isset($data->sheets[0]['cells'][$i][3]) && isset($data->sheets[0]['cells'][$i][4]) && isset($data->sheets[0]['cells'][$i][5])) {
+                            if ($idFactura == $data->sheets[0]['cells'][$i][1]) {
+                                $codPorducto = $data->sheets[0]['cells'][$i][3];
+                                $productosId[$pos++] = $codPorducto;
+                                $cantidadArray[$codPorducto] = $data->sheets[0]['cells'][$i][4];
+                                $descuentoArray[$codPorducto] = $data->sheets[0]['cells'][$i][5];
+                                $i++;
+                            } else {
+                                break;
+                            }
+                        } else {
+                            $error = true;
+                            break;
+                        }
+                    }
+                    if ($error) {
+                        break;
+                    } else {
+                        $i--;
+                    }
+                    $productos = $em->getRepository('FactelBundle:Producto')->findBy(array("codigoPrincipal" => $productosId));
+                    foreach ($productos as $producto) {
+                        $facturaHasProducto = new FacturaHasProducto();
+                        $idProducto = $producto->getCodigoPrincipal();
+
+                        $facturaHasProducto->setProducto($producto);
+                        $impuestoIva = $producto->getImpuestoIVA();
+                        $baseImponible = 0;
+                        if ($impuestoIva != null) {
+                            $impuesto = new Impuesto();
+                            $impuesto->setCodigo("2");
+                            $impuesto->setCodigoPorcentaje($impuestoIva->getCodigoPorcentaje());
+                            $baseImponible = floatval($cantidadArray[$idProducto]) * floatval($producto->getPrecioUnitario()) - floatval($descuentoArray[$idProducto]);
+                            $impuesto->setBaseImponible($baseImponible);
+
+                            $impuesto->setTarifa("0");
+                            $impuesto->setValor(0.00);
+
+                            if ($impuestoIva->getCodigoPorcentaje() == "0") {
+                                $subTotal0 += $baseImponible;
+                            } else if ($impuestoIva->getCodigoPorcentaje() == "6") {
+                                $subTotaNoObjeto += $baseImponible;
+                            } else if ($impuestoIva->getCodigoPorcentaje() == "7") {
+                                $subTotaExento += $baseImponible;
+                            } else {
+                                $impuesto->setTarifa($impuestoIva->getTarifa());
+                                $impuesto->setValor(round($baseImponible * $impuestoIva->getTarifa() / 100, 2));
+
+                                $subTotal12 += $baseImponible;
+                                $iva12 += round($baseImponible * $impuestoIva->getTarifa() / 100, 2);
+                            }
+
+                            $impuesto->setFacturaHasProducto($facturaHasProducto);
+
+                            $facturaHasProducto->addImpuesto($impuesto);
+                            $subTotalSinImpuesto += $baseImponible;
+                        }
+
+                        $descuento += floatval($descuentoArray[$idProducto]);
+
+                        $facturaHasProducto->setCantidad($cantidadArray[$idProducto]);
+                        $facturaHasProducto->setPrecioUnitario($producto->getPrecioUnitario());
+                        $facturaHasProducto->setDescuento($descuentoArray[$idProducto]);
+                        $facturaHasProducto->setValorTotal($baseImponible);
+                        $facturaHasProducto->setNombre($producto->getNombre());
+                        $facturaHasProducto->setCodigoProducto($producto->getCodigoPrincipal());
+                        $facturaHasProducto->setFactura($entity);
+                        $entity->addFacturasHasProducto($facturaHasProducto);
+                    }
+
+                    $entity->setTotalSinImpuestos($subTotalSinImpuesto);
+                    $entity->setSubtotal12($subTotal12);
+                    $entity->setSubtotal0($subTotal0);
+                    $entity->setSubtotalNoIVA($subTotaNoObjeto);
+                    $entity->setSubtotalExentoIVA($subTotaExento);
+                    $entity->setValorICE($ice);
+                    $entity->setValorIRBPNR($irbpnr);
+                    $entity->setIva12($iva12);
+                    $entity->setTotalDescuento($descuento);
+                    $entity->setPropina(0);
+                    $importeTotal = floatval($subTotalSinImpuesto) + floatval($ice) + floatval($irbpnr) + $iva12;
+                    $entity->setValorTotal($importeTotal);
+                    $em->persist($entity);
+                    $em->flush();
+
+                    $ptoEmision[0]->setSecuencialFactura($ptoEmision[0]->getSecuencialFactura() + 1);
+                    $em->persist($ptoEmision[0]);
+                    $em->flush();
+                    
+                    $this->funtionCrearXmlPDF($entity->getId());
+                }
+            }
+        }
+        return $this->redirect($this->generateUrl('factura'));
+    }
+
+    /**
+     * Creates a new Factura entity.
+     *
+     * @Route("/colnar/{id}", name="factura_clonar")
+     * @Method("GET")
+     * @Secure(roles="ROLE_EMISOR")
+     */
+    public function clonarAccion($id) {
+        $em = $this->getDoctrine()->getManager();
+        $factura = new Factura();
+        $entity = new Factura();
+        $factura = $em->getRepository('FactelBundle:Factura')->findFacturaById($id);
+        if (!$factura) {
+            throw $this->createNotFoundException('No existe la factura con ID = ' + $id);
+        }
+        $fechaEmision = date("d/m/Y");
+        $entity->setEstado("CREADA");
+        $entity->setAmbiente($factura->getAmbiente());
+        $entity->setTipoEmision($factura->getTipoEmision());
+        $secuencial = $factura->getPtoEmision()->getSecuencialFactura();
+        while (strlen($secuencial) < 9) {
+            $secuencial = "0" . $secuencial;
+        }
+        $entity->setSecuencial($secuencial);
+        $entity->setClaveAcceso($this->claveAcceso($entity, $factura->getEmisor(), $factura->getEstablecimiento(), $factura->getPtoEmision(), $fechaEmision));
+        $entity->setObservacion($factura->getObservacion());
+        $fechaModificada = str_replace("/", "-", $fechaEmision);
+        $fecha = new \DateTime($fechaModificada);
+        $entity->setFechaEmision($fecha);
+
+        $entity->setCliente($factura->getCliente());
+        $entity->setEmisor($factura->getEmisor());
+        $entity->setEstablecimiento($factura->getEstablecimiento());
+        $entity->setPtoEmision($factura->getPtoEmision());
+
+        foreach ($factura->getFacturasHasProducto() as $factProducto) {
+            $facturaHasProducto = new FacturaHasProducto();
+            $producto = $factProducto->getProducto();
+            $facturaHasProducto->setProducto($producto);
+            $impuestoIva = $producto->getImpuestoIVA();
+            $impuestoICE = $producto->getImpuestoICE();
+
+            foreach ($factProducto->getImpuestos() as $factImpuesto) {
+                $impuesto = new Impuesto();
+                $impuesto->setCodigo($factImpuesto->getCodigo());
+                $impuesto->setCodigoPorcentaje($factImpuesto->getCodigoPorcentaje());
+                $impuesto->setBaseImponible($factImpuesto->getBaseImponible());
+                $impuesto->setTarifa($factImpuesto->getTarifa());
+                $impuesto->setValor($factImpuesto->getValor());
+                $impuesto->setFacturaHasProducto($facturaHasProducto);
+                $facturaHasProducto->addImpuesto($impuesto);
+            }
+            $facturaHasProducto->setCantidad($factProducto->getCantidad());
+            $facturaHasProducto->setPrecioUnitario($factProducto->getPrecioUnitario());
+            $facturaHasProducto->setDescuento($factProducto->getDescuento());
+            $facturaHasProducto->setValorTotal($factProducto->getValorTotal());
+            $facturaHasProducto->setNombre($factProducto->getNombre());
+            $facturaHasProducto->setCodigoProducto($factProducto->getCodigoProducto());
+            $facturaHasProducto->setFactura($entity);
+            $entity->addFacturasHasProducto($facturaHasProducto);
+        }
+        $entity->setFormaPago($factura->getFormaPago());
+        $entity->setTotalSinImpuestos($factura->getTotalSinImpuestos());
+        $entity->setSubtotal12($factura->getSubtotal12());
+        $entity->setSubtotal0($factura->getSubtotal0());
+        $entity->setSubtotalNoIVA($factura->getSubtotalNoIVA());
+        $entity->setSubtotalExentoIVA($factura->getSubtotalExentoIVA());
+        $entity->setValorICE($factura->getValorICE());
+        $entity->setValorIRBPNR($factura->getValorIRBPNR());
+        $entity->setIva12($factura->getIva12());
+        $entity->setTotalDescuento($factura->getTotalDescuento());
+        $entity->setPropina(0);
+        $entity->setValorTotal($factura->getValorTotal());
+        $em->persist($entity);
+        $em->flush();
+
+        $factura->getPtoEmision()->setSecuencialFactura($factura->getPtoEmision()->getSecuencialFactura() + 1);
+        $em->persist($factura->getPtoEmision());
+        $em->flush();
+
+        $this->funtionCrearXmlPDF($entity->getId());
+
+        return $this->redirect($this->generateUrl('factura_show', array('id' => $entity->getId())));
+    }
+
+    /**
+     * Creates a new Factura entity.
+     *
+     * @Route("/anular/{id}", name="factura_anular")
+     * @Method("GET")
+     * @Secure(roles="ROLE_EMISOR")
+     */
+    public function anularAccion($id) {
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('FactelBundle:Factura')->find($id);
+        if (!$entity) {
+            throw $this->createNotFoundException('No existe la factura con ID = ' + $id);
+        }
+        $entity->setEstado("ANULADA");
+        $em->persist($entity);
+        $em->flush();
+        return $this->redirect($this->generateUrl('factura_show', array('id' => $entity->getId())));
+    }
+
+    public function funtionCrearXmlPDF($id) {
+        $entity = new Factura();
+        $procesarComprobanteElectronico = new \ProcesarComprobanteElectronico();
+        $respuesta = null;
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('FactelBundle:Factura')->findFacturaById($id);
+        $emisor = $entity->getEmisor();
+        $configApp = new \configAplicacion();
+        $configApp->dirFirma = $emisor->getDirFirma();
+        $configApp->passFirma = $emisor->getPassFirma();
+        $configApp->dirAutorizados = $emisor->getDirDocAutorizados();
+
+        if ($entity->getEstablecimiento()->getDirLogo() != "") {
+            $configApp->dirLogo = $entity->getEstablecimiento()->getDirLogo();
+        } else {
+            $configApp->dirLogo = $emisor->getDirLogo();
+        }
+        $configCorreo = new \configCorreo();
+        $configCorreo->correoAsunto = "Nuevo Comprobante Electrónico";
+        $configCorreo->correoHost = $emisor->getServidorCorreo();
+        $configCorreo->correoPass = $emisor->getPassCorreo();
+        $configCorreo->correoPort = $emisor->getPuerto();
+        $configCorreo->correoRemitente = $emisor->getCorreoRemitente();
+        $configCorreo->sslHabilitado = $emisor->getSSL();
+
+
+        $factura = new \factura();
+        $factura->configAplicacion = $configApp;
+        $factura->configCorreo = $configCorreo;
+
+        $factura->ambiente = $entity->getAmbiente();
+        $factura->tipoEmision = $entity->getTipoEmision();
+        $factura->razonSocial = $emisor->getRazonSocial();
+        if ($entity->getEstablecimiento()->getNombreComercial() != "") {
+            $factura->nombreComercial = $entity->getEstablecimiento()->getNombreComercial();
+        } else if ($emisor->getNombreComercial() != "") {
+            $factura->nombreComercial = $emisor->getNombreComercial();
+        }
+        $factura->ruc = $emisor->getRuc(); //[Ruc]
+        $factura->codDoc = "01";
+        $factura->establecimiento = $entity->getEstablecimiento()->getCodigo();
+        $factura->ptoEmision = $entity->getPtoEmision()->getCodigo();
+        $factura->secuencial = $entity->getSecuencial();
+        $factura->fechaEmision = $entity->getFechaEmision()->format("d/m/Y");
+        $factura->dirMatriz = $emisor->getDireccionMatriz();
+        $factura->dirEstablecimiento = $entity->getEstablecimiento()->getDireccion();
+        if ($emisor->getContribuyenteEspecial() != "") {
+            $factura->contribuyenteEspecial = $emisor->getContribuyenteEspecial();
+        }
+        $factura->obligadoContabilidad = $emisor->getObligadoContabilidad();
+        $factura->tipoIdentificacionComprador = $entity->getCliente()->getTipoIdentificacion();
+        $factura->razonSocialComprador = $entity->getCliente()->getNombre();
+        $factura->identificacionComprador = $entity->getCliente()->getIdentificacion();
+        $factura->totalSinImpuestos = $entity->getTotalSinImpuestos();
+        $factura->totalDescuento = $entity->getTotalDescuento();
+
+
+
+        $factura->propina = $entity->getPropina();
+        $factura->importeTotal = $entity->getValorTotal();
+        $factura->moneda = "DOLAR"; //DOLAR
+        $pagos = array();
+
+        $pago = new \pago();
+        $pago->formaPago = $entity->getFormaPago();
+        $pago->total = $entity->getValorTotal();
+        $pagos [] = $pago;
+
+        $factura->pagos = $pagos;
+
+        $codigoPorcentajeIVA = "";
+        $detalles = array();
+        $facturasHasProducto = $entity->getFacturasHasProducto();
+        $impuestosTotalICE = array();
+        $baseImponibleICE = array();
+        $impuestosTotalIRBPNR = array();
+        $baseImponibleIRBPNR = array();
+        foreach ($facturasHasProducto as $facturasHasProducto) {
+            $producto = new \FactelBundle\Entity\Producto();
+            $producto = $facturasHasProducto->getProducto();
+            $detalleFactura = new \detalleFactura();
+            $detalleFactura->codigoPrincipal = $facturasHasProducto->getCodigoProducto();
+            if ($producto->getCodigoAuxiliar() != "") {
+                $detalleFactura->codigoAuxiliar = $producto->getCodigoAuxiliar();
+            }
+            $detalleFactura->descripcion = $facturasHasProducto->getNombre();
+            $detalleFactura->cantidad = $facturasHasProducto->getCantidad();
+            $detalleFactura->precioUnitario = $facturasHasProducto->getPrecioUnitario();
+            $detalleFactura->descuento = $facturasHasProducto->getDescuento();
+            $detalleFactura->precioTotalSinImpuesto = $facturasHasProducto->getValorTotal();
+
+            $impuestos = array();
+            $impuestosProducto = $facturasHasProducto->getImpuestos();
+            foreach ($impuestosProducto as $impuestoProducto) {
+
+                $impuesto = new \impuesto(); // Impuesto del detalle
+                $impuesto->codigo = $impuestoProducto->getCodigo();
+                if ($impuestoProducto->getCodigo() == "2" && $impuestoProducto->getValor() > 0) {
+                    $codigoPorcentajeIVA = $impuestoProducto->getCodigoPorcentaje();
+                }
+                $impuesto->codigoPorcentaje = $impuestoProducto->getCodigoPorcentaje();
+                $impuesto->tarifa = $impuestoProducto->getTarifa();
+                $impuesto->baseImponible = $impuestoProducto->getBaseImponible();
+                $impuesto->valor = $impuestoProducto->getValor();
+                $impuestos[] = $impuesto;
+
+                if ($impuestoProducto->getCodigo() == "3") {
+                    if (isset($impuestosTotalICE[$impuestoProducto->getCodigoPorcentaje()])) {
+                        $impuestosTotalICE[$impuestoProducto->getCodigoPorcentaje()] += $impuestoProducto->getValor();
+                        $baseImponibleICE[$impuestoProducto->getCodigoPorcentaje()] += $impuestoProducto->getBaseImponible();
+                    } else {
+                        $impuestosTotalICE[$impuestoProducto->getCodigoPorcentaje()] = $impuestoProducto->getValor();
+                        $baseImponibleICE[$impuestoProducto->getCodigoPorcentaje()] = $impuestoProducto->getBaseImponible();
+                    }
+                }
+                if ($impuestoProducto->getCodigo() == "5") {
+                    if (isset($impuestosTotalIRBPNR[$impuestoProducto->getCodigoPorcentaje()])) {
+                        $impuestosTotalIRBPNR[$impuestoProducto->getCodigoPorcentaje()] += $impuestoProducto->getValor();
+                        $baseImponibleIRBPNR[$impuestoProducto->getCodigoPorcentaje()] += $impuestoProducto->getBaseImponible();
+                    } else {
+                        $impuestosTotalIRBPNR[$impuestoProducto->getCodigoPorcentaje()] = $impuestoProducto->getValor();
+                        $baseImponibleIRBPNR[$impuestoProducto->getCodigoPorcentaje()] = $impuestoProducto->getBaseImponible();
+                    }
+                }
+            }
+            $detalleFactura->impuestos = $impuestos;
+            $detalles[] = $detalleFactura;
+        }
+
+        foreach ($impuestosTotalICE as $clave => $valor) {
+            $totalImpuesto = new \totalImpuesto();
+            $totalImpuesto->codigo = "3";
+            $totalImpuesto->codigoPorcentaje = (string) $clave;
+            $totalImpuesto->baseImponible = sprintf("%01.2f", $baseImponibleICE[$clave]);
+            $totalImpuesto->valor = sprintf("%01.2f", $valor);
+
+            $totalImpuestoArray[] = $totalImpuesto;
+        }
+
+        foreach ($impuestosTotalIRBPNR as $clave => $valor) {
+            $totalImpuesto = new \totalImpuesto();
+            $totalImpuesto->codigo = "5";
+            $totalImpuesto->codigoPorcentaje = (string) $clave;
+            $totalImpuesto->baseImponible = sprintf("%01.2f", $baseImponibleIRBPNR[$clave]);
+            $totalImpuesto->valor = sprintf("%01.2f", $valor);
+
+            $totalImpuestoArray[] = $totalImpuesto;
+        }
+
+        $totalImpuestoArray = array();
+        if ($entity->getSubtotal12() > 0) {
+            $totalImpuesto = new \totalImpuesto();
+            $totalImpuesto->codigo = "2";
+            $totalImpuesto->codigoPorcentaje = $codigoPorcentajeIVA;
+            $totalImpuesto->baseImponible = $entity->getSubtotal12();
+            $totalImpuesto->valor = $entity->getIva12();
+
+            $totalImpuestoArray[] = $totalImpuesto;
+        }
+        if ($entity->getSubtotal0() > 0) {
+            $totalImpuesto = new \totalImpuesto();
+            $totalImpuesto->codigo = "2";
+            $totalImpuesto->codigoPorcentaje = "0";
+            $totalImpuesto->baseImponible = $entity->getSubtotal0();
+            $totalImpuesto->valor = "0.00";
+
+            $totalImpuestoArray[] = $totalImpuesto;
+        }
+        if ($entity->getSubtotalExentoIVA() > 0) {
+            $totalImpuesto = new \totalImpuesto();
+            $totalImpuesto->codigo = "2";
+            $totalImpuesto->codigoPorcentaje = "7";
+            $totalImpuesto->baseImponible = $entity->getSubtotalExentoIVA();
+            $totalImpuesto->valor = "0.00";
+
+            $totalImpuestoArray[] = $totalImpuesto;
+        }
+        if ($entity->getSubtotalNoIVA() > 0) {
+            $totalImpuesto = new \totalImpuesto();
+            $totalImpuesto->codigo = "2";
+            $totalImpuesto->codigoPorcentaje = "6";
+            $totalImpuesto->baseImponible = $entity->getSubtotalNoIVA();
+            $totalImpuesto->valor = "0.00";
+
+            $totalImpuestoArray[] = $totalImpuesto;
+        }
+
+        $factura->detalles = $detalles;
+        $factura->totalConImpuesto = $totalImpuestoArray;
+
+        $camposAdicionales = array();
+        
+        $cliente = $entity->getCliente();
+        if ($cliente->getDireccion() != "") {
+            $campoAdic = new \campoAdicional();
+            $campoAdic->nombre = "Dirección";
+            $campoAdic->valor = $cliente->getDireccion();
+
+            $camposAdicionales [] = $campoAdic;
+        }
+        if ($cliente->getCelular() != "") {
+            $campoAdic = new \campoAdicional();
+            $campoAdic->nombre = "Teléfono";
+            $campoAdic->valor = $cliente->getCelular();
+
+            $camposAdicionales [] = $campoAdic;
+        }
+        if ($entity->getObservacion() != "") {
+            $campoAdic = new \campoAdicional();
+            $campoAdic->nombre = "Observacion";
+            $campoAdic->valor = $entity->getObservacion();
+
+            $camposAdicionales [] = $campoAdic;
+        }
+        if (count($camposAdicionales) > 0) {
+            $factura->infoAdicional = $camposAdicionales;
+        }
+
+        $procesarComprobante = new \procesarComprobante();
+        $procesarComprobante->comprobante = $factura;
+        $procesarComprobante->envioSRI = false;
+        $respuesta = $procesarComprobanteElectronico->procesarComprobante($procesarComprobante);
+        if ($respuesta->return->estadoComprobante == "FIRMADO") {
+            $entity->setNombreArchivo("FAC" . $entity->getEstablecimiento()->getCodigo() . "-" . $entity->getPtoEmision()->getCodigo() . "-" . $entity->getSecuencial());
+        }
+        $em->persist($entity);
+        $em->flush();
     }
 
     /**
@@ -118,15 +905,30 @@ class FacturaController extends Controller {
             return $this->redirect($this->generateUrl('factura_show', array('id' => $entity->getId())));
         }
         $emisor = $entity->getEmisor();
+        $hoy = date("Y-m-d");
+        if ($emisor->getPlan() != null && $emisor->getFechaFin()) {
+            if ($hoy > $emisor->getFechaFin()) {
+                $this->get('session')->getFlashBag()->add(
+                        'notice', "Su plan ha caducado por fovor contacte con nuestro equipo para su renovacion"
+                );
+                return $this->redirect($this->generateUrl('factura_show', array('id' => $entity->getId())));
+            }
+            if ($emisor->getCantComprobante() > $emisor->getPlan()->getCantComprobante()) {
+                $this->get('session')->getFlashBag()->add(
+                        'notice', "Ha superado el numero de comprobantes contratado en su plan, por fovor contacte con nuestro equipo para su renovacion"
+                );
+                return $this->redirect($this->generateUrl('factura_show', array('id' => $entity->getId())));
+            }
+        }
         $configApp = new \configAplicacion();
         $configApp->dirFirma = $emisor->getDirFirma();
         $configApp->passFirma = $emisor->getPassFirma();
         $configApp->dirAutorizados = $emisor->getDirDocAutorizados();
-        
+
         if ($entity->getEstablecimiento()->getDirLogo() != "") {
             $configApp->dirLogo = $entity->getEstablecimiento()->getDirLogo();
-        }else{
-          $configApp->dirLogo = $emisor->getDirLogo();  
+        } else {
+            $configApp->dirLogo = $emisor->getDirLogo();
         }
         $configCorreo = new \configCorreo();
         $configCorreo->correoAsunto = "Nuevo Comprobante Electrónico";
@@ -356,7 +1158,7 @@ class FacturaController extends Controller {
                         $entity->setEnviarSiAutorizado(true);
                     }
                 }
-            } else if ($entity->getEstado() == "ERROR") {
+            } else if ($entity->getEstado() == "ERROR" || $entity->getEstado() == "CREADA") {
                 $procesarComprobante->envioSRI = true;
                 $respuesta = $procesarComprobanteElectronico->procesarComprobante($procesarComprobante);
                 if ($respuesta->return->estadoComprobante == "DEVUELTA" || $respuesta->return->estadoComprobante == "NO AUTORIZADO") {
@@ -430,10 +1232,13 @@ class FacturaController extends Controller {
             $fechaAutorizacion = str_replace("/", "-", $respuesta->return->fechaAutorizacion);
             $entity->setFechaAutorizacion(new \DateTime($fechaAutorizacion));
         }
-
         $entity->setEstado($respuesta->return->estadoComprobante);
         if ($entity->getEstado() == "AUTORIZADO") {
             $entity->setNombreArchivo("FAC" . $entity->getEstablecimiento()->getCodigo() . "-" . $entity->getPtoEmision()->getCodigo() . "-" . $entity->getSecuencial());
+            if ($emisor->getAmbiente() == "2") {
+                $emisor->setCantComprobante($emisor->getCantComprobante() + 1);
+                $em->persist($emisor);
+            }
         }
         $mensajes = $entity->getMensajes();
         foreach ($mensajes as $mensaje) {
@@ -798,6 +1603,7 @@ class FacturaController extends Controller {
                 $em->persist($ptoEmision[0]);
                 $em->flush();
             }
+            $this->funtionCrearXmlPDF($entity->getId());  
             return $this->redirect($this->generateUrl('factura_show', array('id' => $entity->getId())));
         } else {
             throw $this->createNotFoundException('El usuario del sistema no tiene asignado un Punto de Emision.');
@@ -815,12 +1621,7 @@ class FacturaController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $factura = new Factura();
         $factura = $em->getRepository('FactelBundle:Factura')->findFacturaById($id);
-        if ($factura->getEstado() != "AUTORIZADO") {
-            $this->get('session')->getFlashBag()->add(
-                    'notice', "Para descargar los archivos generados el comprobantes debe haber sido AUTORIZADO"
-            );
-            return $this->redirect($this->generateUrl('factura_show', array('id' => $factura->getId())));
-        }
+        
         $archivoName = $factura->getNombreArchivo();
         $pathXML = $factura->getEmisor()->getDirDocAutorizados() . DIRECTORY_SEPARATOR . $factura->getCliente()->getIdentificacion() . DIRECTORY_SEPARATOR . $archivoName . ".xml";
         $pathPDF = $factura->getEmisor()->getDirDocAutorizados() . DIRECTORY_SEPARATOR . $factura->getCliente()->getIdentificacion() . DIRECTORY_SEPARATOR . $archivoName . ".pdf";
@@ -864,7 +1665,7 @@ class FacturaController extends Controller {
     /**
      * Displays a form to create a new Factura entity.
      *
-     * @Route("/nueva", name="factura_new")
+     * @Route("/nuevo", name="factura_new")
      * @Method("GET")
      * @Secure(roles="ROLE_EMISOR")
      * @Template()
@@ -882,6 +1683,20 @@ class FacturaController extends Controller {
     }
 
     /**
+     * @Route("/cargar", name="facturas_load")
+     * @Method("GET")
+     * @Secure(roles="ROLE_EMISOR_ADMIN")
+     * @Template()
+     */
+    public function cargarFacturaAction() {
+        $form = $this->createFacturaMasivaForm();
+
+        return array(
+            'form' => $form->createView(),
+        );
+    }
+
+    /**
      * Finds and displays a Factura entity.
      *
      * @Route("/{id}", name="factura_show")
@@ -893,7 +1708,6 @@ class FacturaController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('FactelBundle:Factura')->findFacturaById($id);
-
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Factura entity.');
         }
@@ -919,9 +1733,9 @@ class FacturaController extends Controller {
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Factura entity.');
         }
-        if ($entity->getEstado() == "AUTORIZADO" || $entity->getEstado() == "ERROR" || $entity->getEstado() == "PROCESANDOSE") {
+        if ($entity->getEstado() == "AUTORIZADO" || $entity->getEstado() == "ERROR" ) {
             $this->get('session')->getFlashBag()->add(
-                    'notice', "Solo puede ser editada la factura en estado: NO AUTORIZADO Y DEVUELTA"
+                    'notice', "Solo puede ser editada la factura en estado: NO AUTORIZADO, DEVUELTA y PROCESANDOSE"
             );
             return $this->redirect($this->generateUrl('factura_show', array('id' => $entity->getId())));
         }
@@ -938,8 +1752,8 @@ class FacturaController extends Controller {
      * @return \Symfony\Component\Form\Form The form
      */
     private function createEditForm(Factura $entity) {
-        $form = $this->createForm(new FacturaType(), $entity, array(
-            'action' => $this->generateUrl('factura_update', array('id' => $entity->getId())),
+        $form = $this->createForm(FacturaType::class, $entity, array(
+            'action' => $this->generateUrl('factura_edit', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -956,12 +1770,9 @@ class FacturaController extends Controller {
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id) {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
+            $form = $this->createDeleteForm($id);
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('FactelBundle:Factura')->find($id);
+            $entity = $em->getRepository('FactelBundle:Factura')->findFacturaById($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Factura entity.');
@@ -969,9 +1780,27 @@ class FacturaController extends Controller {
 
             $em->remove($entity);
             $em->flush();
-        }
 
         return $this->redirect($this->generateUrl('factura'));
+    }
+
+    /**
+     * Creates a form to delete a Factura entity by id.
+     *
+     * @param mixed $id The entity id
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function eliminarhas($id) {
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('FactelBundle:Factura')->findhas($id);
+
+        if (!$entity) {
+                throw $this->createNotFoundException('Unable to find Factura entity.');
+        }
+
+        $em->remove($entity);
+        $em->flush();
     }
 
     /**
@@ -1024,6 +1853,27 @@ class FacturaController extends Controller {
         }
 
         return strval($modulo11);
+    }
+
+    public function getUploadRootDir() {
+        // the absolute directory path where uploaded
+        // documents should be saved
+        return __DIR__ . '/../../../web/upload';
+    }
+
+    public function createFacturaMasivaForm() {
+
+        $builder = $this->createFormBuilder();
+        $builder->setAction($this->generateUrl('factura_create_masivo'));
+        $builder->setMethod('POST');
+
+        $builder->add('Facturas', 'file');
+
+        $builder->add('import', 'submit', array(
+            'label' => 'Cargar',
+            'attr' => array('class' => 'import'),
+        ));
+        return $builder->getForm();
     }
 
 }

@@ -73,6 +73,12 @@ class Emisor {
     protected $clientes;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Plan", inversedBy="emisores")
+     * @ORM\JoinColumn(name="plan_id", referencedColumnName="id")
+     */
+    protected $plan;
+    
+    /**
      * @var string
      *
      * @ORM\Column(name="ruc", type="string", length=13)
@@ -208,6 +214,28 @@ class Emisor {
      * @ORM\Column(name="activo", type="boolean", nullable=TRUE)
      */
     protected $activo;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cantComprobante", type="integer")
+     */
+    protected $cantComprobante = 0;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fechaInicio", type="date", nullable=TRUE)
+     */
+    protected $fechaInicio;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fechaFin", type="date", nullable=TRUE)
+     */
+    protected $fechaFin;
+
 
     public function __toString() {
         return $this->razonSocial;
@@ -929,5 +957,100 @@ class Emisor {
     public function getGuias()
     {
         return $this->guias;
+    }
+    
+     /**
+     * Set plan
+     *
+     * @param \FactelBundle\Entity\Plan $plan
+     *
+     * @return Emisor
+     */
+    public function setPlan(\FactelBundle\Entity\Plan $plan) {
+        $this->plan = $plan;
+
+        return $this;
+    }
+
+    /**
+     * Get plan
+     *
+     * @return \FactelBundle\Entity\Plan
+     */
+    public function getPlan() {
+        return $this->plan;
+    }
+
+
+    /**
+     * Set cantComprobante
+     *
+     * @param integer $cantComprobante
+     *
+     * @return Emisor
+     */
+    public function setCantComprobante($cantComprobante)
+    {
+        $this->cantComprobante = $cantComprobante;
+
+        return $this;
+    }
+
+    /**
+     * Get cantComprobante
+     *
+     * @return integer
+     */
+    public function getCantComprobante()
+    {
+        return $this->cantComprobante;
+    }
+
+    /**
+     * Set fechaInicio
+     *
+     * @param \DateTime $fechaInicio
+     *
+     * @return Emisor
+     */
+    public function setFechaInicio($fechaInicio)
+    {
+        $this->fechaInicio = $fechaInicio;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaInicio
+     *
+     * @return \DateTime
+     */
+    public function getFechaInicio()
+    {
+        return $this->fechaInicio;
+    }
+
+    /**
+     * Set fechaFin
+     *
+     * @param \DateTime $fechaFin
+     *
+     * @return Emisor
+     */
+    public function setFechaFin($fechaFin)
+    {
+        $this->fechaFin = $fechaFin;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaFin
+     *
+     * @return \DateTime
+     */
+    public function getFechaFin()
+    {
+        return $this->fechaFin;
     }
 }

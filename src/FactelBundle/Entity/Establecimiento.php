@@ -113,7 +113,7 @@ class Establecimiento {
     /**
      * @var string
      *
-     * @ORM\Column(name="dirLogo", type="string", length=200)
+     * @ORM\Column(name="dirLogo", type="string", length=200,nullable=TRUE)
      */
     protected $dirLogo;
 

@@ -1,0 +1,19 @@
+{% extends "FactelBundle::Layout.html.twig" %}
+{% block css %}
+<!-- DataTables CSS -->
+<link href="{{asset('recursos/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css')}}" rel="stylesheet">
+<!-- DataTables Responsive CSS -->
+<link href="{{asset('recursos/bower_components/datatables-responsive/css/dataTables.responsive.css')}}" rel="stylesheet">
+{% endblock %}
+{% block panel_title %}
+<i class="fa fa-bar-chart-o fa-fw"></i> Agregar
+
+
+{% endblock %}
+{% block content %}
+<form action="{{ path('addctas') }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+
+    <input type="submit" />
+</form>
+{% endblock %}

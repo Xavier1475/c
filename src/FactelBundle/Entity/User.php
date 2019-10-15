@@ -79,8 +79,44 @@ class User implements AdvancedUserInterface, \Serializable {
      */
     private $rol;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Plancuentas", mappedBy="user")
+     */
+    protected $planes;
+
     public function __construct() {
         $this->isActive = true;
+        $this->planes = new \Doctrine\Common\Collections\ArrayCollection();
+
+    }
+    /**
+     * Add planes
+     *
+     * @param \FactelBundle\Entity\Plancuentas $planes
+     * @return User
+     */
+    public function addPlanes(\FactelBundle\Entity\Plancuentas $planes) {
+        $this->planes[] = $planes;
+
+        return $this;
+    }
+
+    /**
+     * Remove planes
+     *
+     * @param \FactelBundle\Entity\Plancuentas $planes
+     */
+    public function removePlanes(\FactelBundle\Entity\Plancuentas $planes) {
+        $this->planes->removeElement($planes);
+    }
+
+    /**
+     * Get planes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPlanes() {
+        return $this->planes;
     }
 
     public function isAccountNonExpired() {

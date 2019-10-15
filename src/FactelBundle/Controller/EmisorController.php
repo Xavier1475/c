@@ -28,7 +28,7 @@ class EmisorController extends Controller {
     public function indexAction() {
         if ($this->get("security.context")->isGranted("ROLE_ADMIN")) {
             $em = $this->getDoctrine()->getManager();
-
+            $planes = $em->getRepository('FactelBundle:Plan')->findBy(array("activo" => true));
             $entities = $em->getRepository('FactelBundle:Emisor')->findAll();
             $deleteForms = array();
             foreach ($entities as $entity) {
@@ -37,6 +37,7 @@ class EmisorController extends Controller {
             return array(
                 'entities' => $entities,
                 'deleteForms' => $deleteForms,
+                'planes' => $planes
             );
         } else {
             $user = $this->get("security.context")->getToken()->getUser();
@@ -91,6 +92,40 @@ class EmisorController extends Controller {
     }
 
     /**
+     * Creates a new Emisor entity.
+     *
+     * @Route("/configurar-plan", name="config-plan")
+     * @Secure(roles="ROLE_ADMIN")
+     * @Method("POST")
+     */
+    public function configAction(Request $request) {
+        $fechaInicio = $request->request->get("fechaInicial");
+        $fechaFin = $request->request->get("fechaFinal");
+        $idPlan = $request->request->get("plan");
+        $idEmisor = $request->request->get("idEmisor");
+        $em = $this->getDoctrine()->getManager();
+        $emisor = new Emisor();
+        $emisor = $em->getRepository('FactelBundle:Emisor')->find($idEmisor);
+        $plan = $em->getRepository('FactelBundle:Plan')->find($idPlan);
+        $fechaModificada = str_replace("/", "-", $fechaInicio);
+        $fecha = new \DateTime($fechaModificada);
+
+        $emisor->setFechaInicio($fecha);
+        $fechaModificada = str_replace("/", "-", $fechaFin);
+        $fecha = new \DateTime($fechaModificada);
+        $emisor->setFechaFin($fecha);
+        $emisor->setPlan($plan);
+        $emisor->setCantComprobante(0);
+        $em->persist($emisor);
+        $em->flush();
+
+        $this->get('session')->getFlashBag()->add(
+                'confirm', "Se ha configurado el plan " . $plan->getNombre() . " al emisor " . $emisor->getRazonSocial()
+        );
+        return $this->redirect($this->generateUrl('emisor'));
+    }
+
+    /**
      * Creates a form to create a Emisor entity.
      *
      * @param Emisor $entity The entity
@@ -106,6 +141,100 @@ class EmisorController extends Controller {
 
 
         return $form;
+    }
+
+    /**
+     * Displays a form to edit an existing Emisor entity.
+     *
+     * @Route("/borrar-doc-prueba", name="borrar_doc")
+     * @Secure(roles="ROLE_EMISOR_ADMIN")
+     * @Method("GET")
+     */
+    public function deleteDocumentoPrueba() {
+        $em = $this->getDoctrine()->getManager();
+        $emisorId = $em->getRepository('FactelBundle:User')->findEmisorId($this->get("security.context")->gettoken()->getuser()->getId());
+        $emisor = new Emisor();
+        $emisor = $em->getRepository('FactelBundle:Emisor')->find($emisorId);
+        foreach ($emisor->getFacturas() as $factura) {
+            if ($factura->getAmbiente() == "1") {
+                foreach ($factura->getMensajes() as $mensaje) {
+                    $em->remove($mensaje);
+                }
+
+                foreach ($factura->getFacturasHasProducto() as $facturaHasProducto) {
+                    foreach ($facturaHasProducto->getImpuestos() as $impuesto) {
+                        $em->remove($impuesto);
+                    }
+                    foreach ($facturaHasProducto->getDetallesAdicionales() as $detalle) {
+                        $em->remove($detalle);
+                    }
+                    $em->remove($facturaHasProducto);
+                }
+                $em->remove($factura);
+            }
+        }
+
+        foreach ($emisor->getNotasCredito() as $notaCredito) {
+            if ($notaCredito->getAmbiente() == "1") {
+                foreach ($notaCredito->getMensajes() as $mensaje) {
+                    $em->remove($mensaje);
+                }
+
+                foreach ($notaCredito->getNotaCreditoHasProducto() as $notaCreditoHasProducto) {
+                    foreach ($notaCreditoHasProducto->getImpuestos() as $impuesto) {
+                        $em->remove($impuesto);
+                    }
+                    foreach ($notaCreditoHasProducto->getDetallesAdicionales() as $detalle) {
+                        $em->remove($detalle);
+                    }
+                    $em->remove($notaCreditoHasProducto);
+                }
+                $em->remove($notaCredito);
+            }
+        }
+        foreach ($emisor->getNotasDebito() as $notaDebito) {
+            if ($notaDebito->getAmbiente() == "1") {
+                foreach ($notaDebito->getMensajes() as $mensaje) {
+                    $em->remove($mensaje);
+                }
+
+                foreach ($notaDebito->getMotivos() as $motivo) {
+                    $em->remove($motivo);
+                }
+                foreach ($notaDebito->getImpuestos() as $impuesto) {
+                    $em->remove($impuesto);
+                }
+                $em->remove($notaDebito);
+            }
+        }
+
+        foreach ($emisor->getRetencion() as $retencion) {
+            if ($retencion->getAmbiente() == "1") {
+                foreach ($retencion->getMensajes() as $mensaje) {
+                    $em->remove($mensaje);
+                }
+
+                foreach ($retencion->getImpuestos() as $impuestos) {
+                    $em->remove($impuestos);
+                }
+                $em->remove($retencion);
+            }
+        }
+
+        foreach ($emisor->getGuias() as $guia) {
+            if ($guia->getAmbiente() == "1") {
+                foreach ($guia->getMensajes() as $mensaje) {
+                    $em->remove($mensaje);
+                }
+
+                foreach ($guia->getGuiasHasProducto() as $guiaHasProducto) {
+                    $em->remove($guiaHasProducto);
+                }
+                $em->remove($guia);
+            }
+        }
+        $em->flush();
+        return $this->redirect($this->generateUrl('home'));
     }
 
     /**
@@ -216,15 +345,15 @@ class EmisorController extends Controller {
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-
-            $fullDirArchivo = $editForm['dirDocAutorizados']->getData();
-            if (!is_dir($fullDirArchivo)) {
-                mkdir($fullDirArchivo, 0777, true);
+            if (isset($editForm['dirDocAutorizados'])) {
+                $fullDirArchivo = $editForm['dirDocAutorizados']->getData();
+                if (!is_dir($fullDirArchivo)) {
+                    mkdir($fullDirArchivo, 0777, true);
+                }
+            } else {
+                $fullDirArchivo = $entity->getDirDocAutorizados();
             }
             $dirAutorizado = $fullDirArchivo;
-            if (!is_dir($dirAutorizado)) {
-                mkdir($dirAutorizado, 0777, true);
-            }
             $entity->setDirDocAutorizados($dirAutorizado);
             $newLogo = $editForm['logo']->getData();
             $newLogo->move($fullDirArchivo, $newLogo->getClientOriginalName());

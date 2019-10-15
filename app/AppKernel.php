@@ -20,7 +20,6 @@ class AppKernel extends Kernel
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\AopBundle\JMSAopBundle(),
             new FactelBundle\FactelBundle(),
-            new InicioBundle\InicioBundle(),
             new Liuggio\ExcelBundle\LiuggioExcelBundle(),
         );
 

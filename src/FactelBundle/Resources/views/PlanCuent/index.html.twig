@@ -1,0 +1,252 @@
+{% extends "FactelBundle::Layout.html.twig" %}
+{% block css %}
+<!-- DataTables CSS -->
+<link href="{{asset('recursos/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css')}}" rel="stylesheet">
+<!-- DataTables Responsive CSS -->
+<link href="{{asset('recursos/bower_components/datatables-responsive/css/dataTables.responsive.css')}}" rel="stylesheet">
+{% endblock %}
+{% block panel_title %}
+<i class="fa fa-bar-chart-o fa-fw"></i> Plan de Cuentas
+
+<div class="pull-right">
+    <a href="{{ path('addctas') }}">
+        <button class="btn btn-primary link-boton">
+            <i class="fa fa-plus-circle"></i>
+            Nueva
+        </button>
+    </a>
+    
+</div>
+{% endblock %}
+{% block content %}
+<div class="col-lg-2 chtm">
+        <div class="form-group row">
+            <div class="col-sm-10">
+               <input type="search" id="bus" class="form-control mr-sm-2" placeholder="Buscar Cuenta" onkeyup="doSearch()">
+            </div>
+            <div class="col-sm-2 agregartr">
+                agregar
+            </div>
+        </div>
+    </div>
+<div class="dataTable_wrapper table-responsive col-lg-12">  
+    <table class="table table-striped table-bordered table-hover" id="factura-table" name="f">
+        <thead>
+            <tr>
+                
+                <th class="nombre">Cod Empresa</th>
+                <th>Cod Cuenta</th>
+                <th>Nombre Cuenta</th>
+                <th>Moneda</th>
+                {#<th>Flujo Caja</th>
+                <th>Bansel</th>#}
+                <th >Grupo</th>
+                <th>Usuario</th>
+                <th>Fecha Creacion</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody class="tbody">
+        {% for entity in cta %}
+         {#<script>
+           function loadTable(fields, data) {
+    //$('#' + tableId).empty(); //not really necessary
+    var rows = '';
+    $.each(data, function(index, item) {
+        var row = '<tr>';
+        $.each(fields, function(index, field) {
+            row += '<td>' + item[field+''] + '</td>';
+        });
+        rows += row + '<tr>';
+    });
+    $('#factura-table').html(rows);
+}     
+loadTable('factura-table', [{{entity.emisor.ruc}}, {{entity.cliente.nombre}}, {{ entity.secuencial }}], entity);
+        </script>#}
+            <tr id="cta_trtable">
+                {#<td><a href="{{ path('pago', { 'id': entity[0].id }) }}">{{ entity[0].nombre }}</a></td>#}
+                
+                <td HEIGHT="2" class="nombre1">{{entity.idempresa}}</td>
+                <td HEIGHT="2">{{ entity.codCta }}</td>
+                <td HEIGHT="2" class="nombrecuenta">{{entity.tipoCta.nombreCuenta}}</td>
+                <td HEIGHT="2">{{ entity.codMoneda.nombMoneda }}</td>
+                {#<td HEIGHT="2">{{ entity.flujoCaja }}</td>
+                <td HEIGHT="2" >{{ entity.bansel }}</td>#}
+                <td HEIGHT="2" id="sal">{{ entity.grupo.nombGrupo }}</td>
+                <td HEIGHT="2">
+                    {{entity.codUsu}}
+                </td>
+                <td>{{entity.fechaCreacion|date('d-m-Y')}}</td>
+                <td>               
+                </td>
+            </tr>
+
+            <tr class='noSearch hide'>
+
+                <td colspan="5"></td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    
+    </table>
+   
+{% endblock %}
+{% block javascript %}
+        <script>
+        function doSearch()
+
+        {
+
+            const tableReg = document.getElementById('factura-table');
+
+            const searchText = document.getElementById('bus').value.toUpperCase();
+
+            let total = 0;
+
+ 
+
+            // Recorremos todas las filas con contenido de la tabla
+
+            for (let i = 1; i < tableReg.rows.length; i++) {
+
+                // Si el td tiene la clase "noSearch" no se busca en su cntenido
+
+                if (tableReg.rows[i].classList.contains("noSearch")) {
+
+                    continue;
+
+                }
+
+ 
+
+                let found = false;
+
+                const cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+
+                // Recorremos todas las celdas
+
+                for (let j = 0; j < cellsOfRow.length && !found; j++) {
+
+                    const compareWith = cellsOfRow[j].innerHTML.toUpperCase();
+
+                    // Buscamos el texto en el contenido de la celda
+
+                    if (searchText.length == 0 || compareWith.indexOf(searchText) > -1) {
+
+                        found = true;
+
+                        total++;
+
+                    }
+
+                }
+
+                if (found) {
+
+                    tableReg.rows[i].style.display = '';
+
+                } else {
+
+                    // si no ha encontrado ninguna coincidencia, esconde la
+
+                    // fila de la tabla
+
+                    tableReg.rows[i].style.display = 'none';
+
+                }
+
+            }
+
+ 
+
+            // mostramos las coincidencias
+
+            const lastTR=tableReg.rows[tableReg.rows.length-1];
+
+            const td=lastTR.querySelector("td");
+
+            lastTR.classList.remove("hide", "red");
+
+            if (searchText == "") {
+
+                lastTR.classList.add("hide");
+
+            } else if (total) {
+
+                td.innerHTML="Se ha encontrado "+total+" coincidencia"+((total>1)?"s":"");
+
+            } else {
+
+                lastTR.classList.add("red");
+
+                td.innerHTML="No se han encontrado coincidencias";
+
+            }
+
+        }
+        $(document).on("click", '#factura-table tr',function(){
+            $("tr").removeClass("selectw");
+            $(this).addClass("selectw");
+            var dato = $('tr').find('td:nth-child(8)').html('');
+            var dato = $(this).find('td:nth-child(8)').html('<a class="enviarplus" href="javascript:void(0)"><button style="background: transparent;border: none;color: #337ab7;padding: 0;margin: 0;margin-left: 5px;margin-top: -4px;" class="btn btn-primary link-boton"><i class="fa fa-plus"></i></button></a> <a class="enviar" href="javascript:void(0)"><button style="background: transparent;border: none;color: #337ab7;padding: 0;margin: 0;margin-left: 8px;margin-top: -4px;" class="btn btn-primary link-boton"><i class="fa fa-save"></i></button></a>');
+            //var dato1 = $(this).find('td:nth-child(3)').html();
+            //location.href = "guardar?nombre="+dato1; 
+            
+        });
+
+         $(document).on("click", "#factura-table tr td", function(){
+             
+            if($('#factura-table').find("input").parent("td").focus()){
+            var valor = $('#factura-table').find("input").val();
+            var camb = $('#factura-table').find("input").parent("td");
+            camb.html(valor);
+            }
+            var res = $(this).html();
+            if($(this).find("input").length==0){
+                $(this).html('<input  type="text" value="'+res+'"/>');
+                 $("input:text:visible:first").focus();
+            }
+        });
+
+        $(document).on("click", ".enviarplus", function(){
+            $( "<tr style='height:38px;'><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>" ).insertAfter( ".selectw" );
+        }); 
+
+         $(document).on("click", ".enviar", function(){
+             var valores=0;
+            $(this).parents("tr").find("td").each(function(){
+
+                valores=$(this).html()+"\n";
+                console.log(valores);
+            });
+        }); 
+
+        $(document).on("click", ".agregartr", function(){
+             $(".tbody").append("<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>");
+        }); 
+total=0
+$("input:checkbox:checked").each(function() {
+   var count = Number($(this).val());
+   total += count;
+   console.log(total);
+});
+function agregaFila(pos, txt1, txt2)    {
+    var miTabla = document.getElementById("factura-table");
+    var fila = document.createElement("tr");
+    var celda1 = document.createElement("td");
+    var celda2 = document.createElement("td");
+    celda1.innerHTML = txt1;
+    celda2.innerHTML = txt2;
+    fila.appendChild(celda1);
+    fila.appendChild(celda2);
+    var TRs = miTabla.getElementsByTagName("TR");
+    if( TRs[pos] ) {
+        miTabla.insertBefore(fila, TRs[pos]);
+    }
+    else {
+        miTabla.appendChild(fila);
+    }
+}
+        </script>
+    {% endblock %}

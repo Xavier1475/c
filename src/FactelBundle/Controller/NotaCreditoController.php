@@ -116,14 +116,29 @@ class NotaCreditoController extends Controller {
             return $this->redirect($this->generateUrl('notacredito_show', array('id' => $entity->getId())));
         }
         $emisor = $entity->getEmisor();
+        $hoy = date("Y-m-d");
+        if ($emisor->getPlan() != null && $emisor->getFechaFin()) {
+            if ($hoy > $emisor->getFechaFin()) {
+                $this->get('session')->getFlashBag()->add(
+                        'notice', "Su plan ha caducado por fovor contacte con nuestro equipo para su renovacion"
+                );
+                return $this->redirect($this->generateUrl('notacredito_show', array('id' => $entity->getId())));
+            }
+            if ($emisor->getCantComprobante() > $emisor->getPlan()->getCantComprobante()) {
+                $this->get('session')->getFlashBag()->add(
+                        'notice', "Ha superado el numero de comprobantes contratado en su plan, por fovor contacte con nuestro equipo para su renovacion"
+                );
+                return $this->redirect($this->generateUrl('notacredito_show', array('id' => $entity->getId())));
+            }
+        }
         $configApp = new \configAplicacion();
         $configApp->dirFirma = $emisor->getDirFirma();
         $configApp->passFirma = $emisor->getPassFirma();
         $configApp->dirAutorizados = $emisor->getDirDocAutorizados();
         if ($entity->getEstablecimiento()->getDirLogo() != "") {
             $configApp->dirLogo = $entity->getEstablecimiento()->getDirLogo();
-        }else{
-          $configApp->dirLogo = $emisor->getDirLogo();  
+        } else {
+            $configApp->dirLogo = $emisor->getDirLogo();
         }
 
         $configCorreo = new \configCorreo();
@@ -143,10 +158,10 @@ class NotaCreditoController extends Controller {
             $notaCredito->ambiente = $entity->getAmbiente();
             $notaCredito->tipoEmision = $entity->getTipoEmision();
             $notaCredito->razonSocial = $emisor->getRazonSocial();
-             if ($entity->getEstablecimiento()->getNombreComercial() != "") {
+            if ($entity->getEstablecimiento()->getNombreComercial() != "") {
                 $notaCredito->nombreComercial = $entity->getEstablecimiento()->getNombreComercial();
-            }else if($emisor->getNombreComercial() != ""){
-                 $notaCredito->nombreComercial = $emisor->getNombreComercial();
+            } else if ($emisor->getNombreComercial() != "") {
+                $notaCredito->nombreComercial = $emisor->getNombreComercial();
             }
             $notaCredito->ruc = $emisor->getRuc(); //[Ruc]
             $notaCredito->codDoc = "04";
@@ -340,7 +355,7 @@ class NotaCreditoController extends Controller {
                         $entity->setEnviarSiAutorizado(true);
                     }
                 }
-            } else if ($entity->getEstado() == "ERROR") {
+            } else if ($entity->getEstado() == "ERROR" || $entity->getEstado() == "CREADA") {
                 $procesarComprobante->envioSRI = true;
                 $respuesta = $procesarComprobanteElectronico->procesarComprobante($procesarComprobante);
                 if ($respuesta->return->estadoComprobante == "DEVUELTA" || $respuesta->return->estadoComprobante == "NO AUTORIZADO") {
@@ -411,6 +426,11 @@ class NotaCreditoController extends Controller {
         $entity->setEstado($respuesta->return->estadoComprobante);
         if ($entity->getEstado() == "AUTORIZADO") {
             $entity->setNombreArchivo("NC" . $entity->getEstablecimiento()->getCodigo() . "-" . $entity->getPtoEmision()->getCodigo() . "-" . $entity->getSecuencial());
+
+            if ($emisor->getAmbiente() == "2") {
+                $emisor->setCantComprobante($emisor->getCantComprobante() + 1);
+                $em->persist($emisor);
+            }
         }
 
         $mensajes = $entity->getMensajes();
@@ -915,9 +935,9 @@ class NotaCreditoController extends Controller {
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find notacredito entity.');
         }
-        if ($entity->getEstado() == "AUTORIZADO" || $entity->getEstado() == "ERROR" || $entity->getEstado() == "PROCESANDOSE") {
+        if ($entity->getEstado() == "AUTORIZADO" || $entity->getEstado() == "ERROR" ) {
             $this->get('session')->getFlashBag()->add(
-                    'notice', "Solo pueden ser editadas las Nota Credito en estado: NO AUTORIZADO Y DEVUELTA"
+                    'notice', "Solo pueden ser editadas las Nota Credito en estado: NO AUTORIZADO, DEVUELTA y PROCESANDOSE"
             );
             return $this->redirect($this->generateUrl('notacredito_show', array('id' => $entity->getId())));
         }

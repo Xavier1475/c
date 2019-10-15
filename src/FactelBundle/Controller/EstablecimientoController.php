@@ -49,6 +49,7 @@ class EstablecimientoController extends Controller {
     /**
      * Creates a new Establecimiento entity.
      *
+     * 
      * @Route("/", name="establecimiento_create")
      * @Secure(roles="ROLE_ADMIN, ROLE_EMISOR_ADMIN")
      * @Method("POST")
@@ -63,10 +64,12 @@ class EstablecimientoController extends Controller {
             $em = $this->getDoctrine()->getManager();
 
             $fullDirArchivo = $entity->getEmisor()->getDirDocAutorizados();
+	
             $newLogo = $form['logo']->getData();
-            $newLogo->move($fullDirArchivo, $newLogo->getClientOriginalName());
+        if($newLogo != null){
+	    $newLogo->move($fullDirArchivo, $newLogo->getClientOriginalName());
             $entity->setDirLogo($fullDirArchivo . "/" . $newLogo->getClientOriginalName());
-
+	}
             $em->persist($entity);
             $em->flush();
 

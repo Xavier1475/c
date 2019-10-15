@@ -1,0 +1,56 @@
+<?php
+
+namespace FactelBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * FacturaHasProducto
+ *
+ * @ORM\Table()
+ * @ORM\Entity
+ */
+class GuiaHasProducto {
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Producto", inversedBy="guiasHasProducto")
+     * @ORM\JoinColumn(name="producto_id", referencedColumnName="id", nullable=false)
+     */
+    protected $producto;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Guia", inversedBy="guiasHasProducto")
+     * @ORM\JoinColumn(name="guia_id", referencedColumnName="id", nullable=false)
+     */
+    protected $guia;
+
+    /**
+     * @ORM\Column(name="cantidad", type="decimal", scale=2)
+     */
+    protected $cantidad;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombre", type="string", length=300)
+     */
+    protected $nombre;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="codigoProducto", type="string", length=300)
+     */
+    protected $codigoProducto;
+    
+   
+}

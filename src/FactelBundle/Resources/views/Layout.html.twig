@@ -6,7 +6,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Sistema de Facturaci&oacute;n Electr&oacute;nica</title>
+        <title>TECHCOMP SOLUTIONS / FACTURACION ELECTRONICA</title>
 
 
 
@@ -19,10 +19,15 @@
 
 
         <!-- Morris Charts CSS -->
-        <link href="{{asset('recursos/bower_components/morrisjs/morris.css')}}" rel="stylesheet">
+        <!--<link href="{{asset('recursos/bower_components/morrisjs/morris.css')}}" rel="stylesheet">-->
+		<link href="{{asset('recursos/bower_components/chartjs/Chart.css')}}" rel="stylesheet">
 
         <!-- Font Awesome -->
         <link href="{{asset('recursos/framework/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
+		<link href="{{asset('recursos/framework/fontello/style.css')}}" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+		
+		
         {% block css %}
         {% endblock %}
         <!-- Style CSS -->
@@ -44,14 +49,14 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="{{path("home")}}">FACILFACT</a>
+                    <a class="navbar-brand" href="{{path("home")}}">TECHCOMP SOLUTIONS</a>
                 </div>
                 <!-- /.navbar-header -->
 
                 <ul class="nav navbar-top-links navbar-right">
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                            <i class="icon-untitled-10"></i>  <i class="icon-double-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-user">
                             {% if app.user.id is defined %}
@@ -59,7 +64,7 @@
                                 {% endif %}
                             </li>
                             <li class="divider"></li>
-                            <li><a href="{{path("logout")}}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                            <li><a href="{{path("logout")}}"><i class="icon-logout"></i> SALIR AHORA</a>
                             </li>
                         </ul>
                         <!-- /.dropdown-user -->
@@ -73,109 +78,128 @@
                         <ul class="nav" id="side-menu">
                             {% if is_granted('ROLE_EMISOR') %}
                             <li>
-                                <a href="{{path("home")}}"><i class="fa fa-dashboard fa-fw"></i> Mi Oficina</a>
+                                <a href="{{path("home")}}"><i class="icon-params-light"></i> PANEL</a>
                             </li>
                             {% endif %}    
 
                             {% if is_granted('ROLE_EMISOR') %}
                             <li>
-                                <a href="#"><i class="fa fa-edit fa-fw"></i> Facturaci&oacute;n<span class="fa arrow"></span></a>
+                                <a href="#"><i class="icon-inbox-light"></i> COMPROBANTES<span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
                                     <li>
-                                        <a href="{{path("factura")}}">Factura</a>
+                                        <a href="{{path("factura")}}">FACTURAS</a>
                                     </li>
                                     <li>
-                                        <a href="{{path("notacredito")}}">Nota Cr&eacute;dito</a>
+                                        <a href="{{path("notacredito")}}">NOTA CR&Eacute;DITO</a>
                                     </li>
                                     <li>
-                                        <a href="{{path("notadebito")}}">Nota D&eacute;bito</a>
+                                        <a href="{{path("notadebito")}}">NOTA D&Eacute;BITO</a>
                                     </li>
                                     <li>
-                                        <a href="{{path("retencion")}}">Retenci&oacute;n</a>
+                                        <a href="{{path("retencion")}}">RETENCI&Oacute;N</a>
                                     </li>
                                     <li>
-                                        <a href="{{path("guia")}}">Guias</a>
+                                        <a href="{{path("guia")}}">GU&Iacute;A DE REMISI&Oacute;N</a>
                                     </li>
                                 </ul>
                             </li>
                             <li>
-                                <a href="#"><i class="fa fa-edit fa-fw"></i> Reporte<span class="fa arrow"></span></a>
+                                <a href="#"><i class=" icon-stats-bars"></i> REPORTES<span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
                                     <li>
-                                        <a href="{{path("reporte")}}">Comprobantes</a>
+                                        <a href="{{path("reporte")}}"><i class="icon-clipboard1"></i> COMPROBANTES</a>
+                                    </li>
+                                    </li>
+                                     <li>
+                                        <a href="{{path("reporte_ventas")}}"><i class="icon-money-light"></i> VENTAS</a>
                                     </li>
                                 </ul>
                             </li>
                             {% endif %}
+
                             <li>
-                                <a href="#"><i class="fa fa-wrench fa-fw"></i> Administrar<span class="fa arrow"></span></a>
+                            <a href="{{path("pago")}}"><i class=" icon-stats-bars"></i> Pago Cliente</a>
+                            </li>
+                            <li>
+                            <a href="{{path("ctas")}}"><i class=" icon-stats-bars"></i> Plan de Cuentas</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="icon-office"></i> ADMINISTRAR NEGOCIO<span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
                                     {% if is_granted('ROLE_ADMIN') %}
                                     <li>
-                                        <a href="{{path("emisor")}}">Emisores</a>
+                                        <a href="{{path("emisor")}}"><i class=" icon-tree"></i> EMISORES</a>
                                     </li>
 
                                     {% endif %}
 
                                     {% if is_granted('ROLE_EMISOR_ADMIN') %}
                                     <li>
-                                        <a href="{{path("emisor")}}">Emisor</a>
+                                        <a href="{{path("emisor")}}"><i class="icon-shop-light"></i> PERFIL DE NEGOCIO</a>
                                     </li>
                                     {% endif %}
                                     {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EMISOR_ADMIN') %}
                                     <li>
-                                        <a href="{{path("establecimiento")}}">Establecimientos</a>
+                                        <a href="{{path("establecimiento")}}"><i class=" icon-map1"></i> ESTABLECIMIENTOS</a>
                                     </li>
                                     <li>
-                                        <a href="{{path("ptoemision")}}">Puntos de Emision</a>
+                                        <a href="{{path("ptoemision")}}"><i class="icon-untitled-13"></i> PUNTOS DE EMISION</a> 
                                     </li>
                                     {% endif %}
 
                                     {% if is_granted('ROLE_ADMIN') %}
-                                    <li>
-                                        <a href="#">Impuestos<span class="fa arrow"></span></a>
+                                    <li> 
+									    <a href="#"><i class="fa fa-calculator"></i> IMPUESTOS<span class="fa arrow"></span></a>
                                         <ul class="nav nav-third-level">
                                             <li>
-                                                <a href="{{path("impuesto_iva")}}">IVA</a>
+                                                <a href="{{path("impuesto_iva")}}"><i class="fa fa-percent"></i> IVA</a>
                                             </li>
                                             <li>
-                                                <a href="{{path("impuesto_ice")}}">ICE</a>
+                                                <a href="{{path("impuesto_ice")}}"><i class="fa fa-percent"></i> ICE</a>
                                             </li>
                                             <li>
-                                                <a href="{{path("impuesto_irbpnr")}}">IRBPNR</a>
+                                                <a href="{{path("impuesto_irbpnr")}}"><i class="fa fa-percent"></i> IRBPNR</a>
                                             </li>
                                         </ul>
                                         <!-- /.nav-third-level -->
                                     </li>
                                     {% endif %}
+                                    {% if is_granted('ROLE_EMISOR_ADMIN') %}
+                                    <li>
+                                        <a href="{{path("facturas_load")}}"><i class="icon-upload"></i> SUBIR FACTURAS</a>
+                                    </li>
+                                    {% endif %}
                                     {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EMISOR_ADMIN') %}
                                     <li>
-                                        <a href="{{path("producto")}}">Productos</a>
+                                        <a href="{{path("producto")}}"><i class="icon-price-tag"></i> CATALOGO</a>
                                     </li>
                                     {% endif %}
                                     {% if is_granted('ROLE_EMISOR_ADMIN') %}
                                     <li>
-                                        <a href="{{path("producto_load")}}">Cargar Productos</a>
+                                        <a href="{{path("producto_load")}}"><i class="icon-upload"></i> SUBIR CATALOGO</a>
                                     </li>
                                     {% endif %}
                                     <li>
-                                        <a href="{{path("cliente")}}">Clientes</a>
+                                        <a href="{{path("cliente")}}"><i class="icon-user-plus"></i> CONTACTOS</a>
 
                                     </li>
                                     {% if is_granted('ROLE_EMISOR_ADMIN') %}
                                     <li>
-                                        <a href="{{path("cliente_load")}}">Cargar Cliente</a>
+                                        <a href="{{path("cliente_load")}}"><i class="icon-upload"></i> SUBIR CONTACTOS</a>
                                     </li>
                                     {% endif %}
                                     {% if is_granted('ROLE_ADMIN')%}
                                     <li>
-                                        <a href="{{path("rol")}}">Roles</a>
+                                        <a href="{{path("plan")}}"><i class="icon-wallet-light"></i> SUSCRIPCIÓN</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{path("rol")}}"><i class="icon-binoculars1"></i> ROLES</a>
                                     </li>
                                     {%endif %}
                                     {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EMISOR_ADMIN') %}
 
                                     <li>
-                                        <a href="{{path("usuario")}}">Usuarios</a>
+                                        <a href="{{path("usuario")}}"><i class="icon-users"></i> USUARIOS</a>
                                     </li>
                                     {%endif %}
 

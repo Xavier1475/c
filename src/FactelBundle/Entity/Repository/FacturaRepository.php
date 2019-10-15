@@ -30,92 +30,53 @@ class FacturaRepository extends EntityRepository {
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-    public function cantidadFacturas($idPtoEmision, $idEmisor) {
+    public function findhas($id) {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
-        $qb->select("COUNT(factura.id)")
-                ->from("FactelBundle:Factura", "factura");
-        if ($idEmisor == null) {
-            $qb->join("factura.ptoEmision", "ptoEmision");
-            $qb->where('ptoEmision.id = :idPtoEmision');
-            $qb->setParameter("idPtoEmision", $idPtoEmision);
-        } else {
-            $qb->join("factura.emisor", "emisor");
-            $qb->where('emisor.id = :idEmisor');
-            $qb->setParameter("idEmisor", $idEmisor);
-        }
+        $qb->select("FacturaHasProducto.id")
+                ->from("FactelBundle:FacturaHasProducto", "FacturaHasProducto")
+                ->where('FacturaHasProducto.id = :id')
+                ->setParameter('id', $id);
 
-        try {
-            return $qb->getQuery()->getSingleScalarResult();
-        } catch (\Doctrine\ORM\NoResultException $e) {
-            return 0;
-        }
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
-    public function cantidadFacturasEstados($idPtoEmision, $idEmisor) {
+    public function editarCuentas($id) {
         $em = $this->getEntityManager();
         $qb = $em->createQueryBuilder();
-        $qb->select("factura.estado,COUNT(factura.estado) as cantidad")
-                ->from("FactelBundle:Factura", "factura");
-        if ($idEmisor == null) {
-            $qb->join("factura.ptoEmision", "ptoEmision");
-            $qb->where('ptoEmision.id = :idPtoEmision');
-            $qb->setParameter("idPtoEmision", $idPtoEmision);
-        } else {
-            $qb->join("factura.emisor", "emisor");
-            $qb->where('emisor.id = :idEmisor');
-            $qb->setParameter("idEmisor", $idEmisor);
-        }
-        
-        $qb->groupBy("factura.estado");
+        $qb->update("FactelBundle:Factura", "factura")
+                ->set('factura.monto", :monto')
+                ->set('factura.abono", :abono')
+                ->set('factura.saldo", :monto')
+                ->where('factura.id = :id')
+                ->setParameter('id', $id);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    public function deleteCuentas($id) {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->delete()
+                ->from("FactelBundle:Factura", "factura")
+                ->where('factura.id = :id')
+                ->setParameter('id', $id);
+
         return $qb->getQuery()->getResult();
     }
     
-    public function ventaTotal($idPtoEmision, $idEmisor, $anno) {
-        $em = $this->getEntityManager();
-        $qb = $em->createQueryBuilder();
-        $qb->select("SUM(factura.valorTotal) as ventaTotal, MONTH(factura.fechaEmision) AS mes")
-                ->from("FactelBundle:Factura", "factura");
-        $qb->where("YEAR(factura.fechaEmision) = :anno");
-        if ($idEmisor == null) {
-            $qb->join("factura.ptoEmision", "ptoEmision");
-            $qb->andWhere('ptoEmision.id = :idPtoEmision');
-            $qb->setParameter("idPtoEmision", $idPtoEmision);
-        } else {
-            $qb->join("factura.emisor", "emisor");
-            $qb->andWhere('emisor.id = :idEmisor');
-            $qb->setParameter("idEmisor", $idEmisor);
-        }
-        $qb->setParameter("anno", $anno);
-        $qb->groupBy("mes");
-        $qb->orderBy("mes");
-        return $qb->getQuery()->getResult();
-    }
-    
-    public function ventaTotalXDia($idPtoEmision, $idEmisor) {
-        $em = $this->getEntityManager();
-        $qb = $em->createQueryBuilder();
-        $qb->select("SUM(factura.valorTotal) as ventaTotal, DAY(factura.fechaEmision) AS dia")
-                ->from("FactelBundle:Factura", "factura");
-        $qb->where("YEAR(factura.fechaEmision) = :anno");
-        $qb->andWhere("MONTH(factura.fechaEmision) = :mes");
-        if ($idEmisor == null) {
-            $qb->join("factura.ptoEmision", "ptoEmision");
-            $qb->andWhere('ptoEmision.id = :idPtoEmision');
-            $qb->setParameter("idPtoEmision", $idPtoEmision);
-        } else {
-            $qb->join("factura.emisor", "emisor");
-            $qb->andWhere('emisor.id = :idEmisor');
-            $qb->setParameter("idEmisor", $idEmisor);
-        }
-        $qb->setParameter("anno", date("Y"));
-        $qb->setParameter("mes", date("m"));
-        $qb->groupBy("dia");
-        $qb->orderBy("dia");
-        return $qb->getQuery()->getResult();
-    }
-    
-    public function findFacturas($search, $start, $limit, $idPtoEmision, $idEmisor) {
+
+    public function cargarCuentas($search, $start, $limit, $idPtoEmision, $idEmisor, $soloAutorizadas = false){
+        /*$em = $this->getEntityManager();
+        $qr = $em->createQueryBuilder();
+        $qr->select("facturas")
+                    ->from("FactelBundle:Factura", "facturas");
+                                      
+                    try {
+                        return $qr->getQuery();
+                    } catch (\Doctrine\ORM\NoResultException $e) {
+                        return 0;
+                    }*/
         $datos = explode("&", $search);
         $fechaInicial = "";
         $fechaFinal = "";
@@ -167,6 +128,218 @@ class FacturaRepository extends EntityRepository {
             $qb->andWhere("factura.fechaEmision BETWEEN :fechaInicial AND :fechaFinal")
                     ->setParameter('fechaInicial', $fechaInicial)
                     ->setParameter('fechaFinal', $fechaFinal);
+        }
+        if ($soloAutorizadas) {
+            $qb->andWhere('factura.estado = :estadoFactura');
+            $qb->setParameter("estadoFactura", "AUTORIZADO");
+        }
+        $qb->orderBy("factura.secuencial", "DESC");
+        return $qb->getQuery()->getResult();
+    }
+    public function editCuentas(){
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->update("FactelBundle:Factura", "factura")
+                ->set('factura.monto", :monto')
+                ->set('factura.abono", :abono')
+                ->set('factura.saldo", :monto')
+                ->where('factura.id = :id')
+                ->setParameter('id', $id);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    public function findCuentas(){
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select("factura, estab, ptoEmision, cliente")
+        ->from("FactelBundle:Factura", "factura")
+        ->join("factura.emisor", "emisor")
+        ->join("factura.establecimiento", "estab")
+        ->join("factura.ptoEmision", "ptoEmision")
+        ->join("factura.cliente", "cliente")
+        ->where('factura.saldo > 0')
+        ->orderBy("factura.nroCuota")
+                ;
+
+                return $qb->getQuery()->getResult();
+    }
+    public function findSaldo($sal){
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select("factura, estab, ptoEmision, cliente,CASE WHEN SUM(factura.saldo)>:abon THEN SUM(factura.saldo)-:abon ELSE SUM(factura.saldo) END AS total")
+        ->from("FactelBundle:Factura", "factura")
+        ->join("factura.emisor", "emisor")
+        ->join("factura.establecimiento", "estab")
+        ->join("factura.ptoEmision", "ptoEmision")
+        ->join("factura.cliente", "cliente")
+        ->setParameter('abon',$sal);
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findCuentasId($Id) {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select("factura, estab, ptoEmision, cliente")
+                ->from("FactelBundle:Factura", "factura")
+                ->join("factura.emisor", "emisor")
+                ->join("factura.establecimiento", "estab")
+                ->join("factura.ptoEmision", "ptoEmision")
+                ->join("factura.cliente", "cliente")
+                ->where('factura.id = :pagoId')
+                ->setParameter('pagoId', $Id);
+
+        return $qb->getQuery()->getResult();
+    }
+    
+
+    public function cantidadFacturas($idPtoEmision, $idEmisor, $soloAutorizadas = false) {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select("COUNT(factura.id)")
+                ->from("FactelBundle:Factura", "factura");
+        if ($idEmisor == null) {
+            $qb->join("factura.ptoEmision", "ptoEmision");
+            $qb->where('ptoEmision.id = :idPtoEmision');
+            $qb->setParameter("idPtoEmision", $idPtoEmision);
+        } else {
+            $qb->join("factura.emisor", "emisor");
+            $qb->where('emisor.id = :idEmisor');
+            $qb->setParameter("idEmisor", $idEmisor);
+        }
+        if ($soloAutorizadas) {
+            $qb->andWhere('factura.estado = :estadoFactura');
+            $qb->setParameter("estadoFactura", "AUTORIZADO");
+        }
+        try {
+            return $qb->getQuery()->getSingleScalarResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return 0;
+        }
+    }
+
+    public function cantidadFacturasEstados($idPtoEmision, $idEmisor) {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select("factura.estado,COUNT(factura.estado) as cantidad")
+                ->from("FactelBundle:Factura", "factura");
+        if ($idEmisor == null) {
+            $qb->join("factura.ptoEmision", "ptoEmision");
+            $qb->where('ptoEmision.id = :idPtoEmision');
+            $qb->setParameter("idPtoEmision", $idPtoEmision);
+        } else {
+            $qb->join("factura.emisor", "emisor");
+            $qb->where('emisor.id = :idEmisor');
+            $qb->setParameter("idEmisor", $idEmisor);
+        }
+
+        $qb->groupBy("factura.estado");
+        return $qb->getQuery()->getResult();
+    }
+
+    public function ventaTotal($idPtoEmision, $idEmisor, $anno) {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select("SUM(factura.valorTotal) as ventaTotal, MONTH(factura.fechaEmision) AS mes")
+                ->from("FactelBundle:Factura", "factura");
+        $qb->where("YEAR(factura.fechaEmision) = :anno");
+        if ($idEmisor == null) {
+            $qb->join("factura.ptoEmision", "ptoEmision");
+            $qb->andWhere('ptoEmision.id = :idPtoEmision');
+            $qb->setParameter("idPtoEmision", $idPtoEmision);
+        } else {
+            $qb->join("factura.emisor", "emisor");
+            $qb->andWhere('emisor.id = :idEmisor');
+            $qb->setParameter("idEmisor", $idEmisor);
+        }
+        $qb->setParameter("anno", $anno);
+        $qb->groupBy("mes");
+        $qb->orderBy("mes");
+        return $qb->getQuery()->getResult();
+    }
+
+    public function ventaTotalXDia($idPtoEmision, $idEmisor) {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select("SUM(factura.valorTotal) as ventaTotal, DAY(factura.fechaEmision) AS dia")
+                ->from("FactelBundle:Factura", "factura");
+        $qb->where("YEAR(factura.fechaEmision) = :anno");
+        $qb->andWhere("MONTH(factura.fechaEmision) = :mes");
+        if ($idEmisor == null) {
+            $qb->join("factura.ptoEmision", "ptoEmision");
+            $qb->andWhere('ptoEmision.id = :idPtoEmision');
+            $qb->setParameter("idPtoEmision", $idPtoEmision);
+        } else {
+            $qb->join("factura.emisor", "emisor");
+            $qb->andWhere('emisor.id = :idEmisor');
+            $qb->setParameter("idEmisor", $idEmisor);
+        }
+        $qb->setParameter("anno", date("Y"));
+        $qb->setParameter("mes", date("m"));
+        $qb->groupBy("dia");
+        $qb->orderBy("dia");
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findFacturas($search, $start, $limit, $idPtoEmision, $idEmisor, $soloAutorizadas = false) {
+        $datos = explode("&", $search);
+        $fechaInicial = "";
+        $fechaFinal = "";
+        if (count($datos) == 3) {
+            $search = $datos[2];
+            $fechaInicial = $datos[0];
+            $fechaFinal = $datos[1];
+        }
+
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select("factura, estab, ptoEmision, cliente")
+                ->from("FactelBundle:Factura", "factura")
+                ->join("factura.emisor", "emisor")
+                ->join("factura.establecimiento", "estab")
+                ->join("factura.ptoEmision", "ptoEmision")
+                ->join("factura.cliente", "cliente");
+        $qb->setMaxResults($limit);
+        $qb->setFirstResult($start);
+        if ($search != "") {
+            $qb->where(
+                            $qb->expr()->like('factura.estado', $qb->expr()->literal('%' . $search . '%'))
+                    )
+                    ->orWhere(
+                            $qb->expr()->like('factura.claveAcceso', $qb->expr()->literal('%' . $search . '%'))
+                    )
+                    ->orWhere(
+                            $qb->expr()->like('factura.secuencial', $qb->expr()->literal('%' . $search . '%'))
+                    )
+                    ->orWhere(
+                            $qb->expr()->like('cliente.nombre', $qb->expr()->literal('%' . $search . '%'))
+                    )
+                    ->orWhere(
+                            $qb->expr()->like('factura.numeroAutorizacion', $qb->expr()->literal('%' . $search . '%'))
+                    )
+                    ->orWhere(
+                            $qb->expr()->like('cliente.identificacion', $qb->expr()->literal('%' . $search . '%'))
+                    ->orWhere(
+                            $qb->expr()->like('emisor.ruc', $qb->expr()->literal('%' . $search . '%'))
+                    )
+            );
+        }
+
+        if ($idEmisor == null) {
+            $qb->andWhere('ptoEmision.id = :idPtoEmision');
+            $qb->setParameter("idPtoEmision", $idPtoEmision);
+        } else {
+            $qb->andWhere('emisor.id = :idEmisor');
+            $qb->setParameter("idEmisor", $idEmisor);
+        }
+        if ($fechaInicial != "" && $fechaFinal) {
+            $qb->andWhere("factura.fechaEmision BETWEEN :fechaInicial AND :fechaFinal")
+                    ->setParameter('fechaInicial', $fechaInicial)
+                    ->setParameter('fechaFinal', $fechaFinal);
+        }
+        if ($soloAutorizadas) {
+            $qb->andWhere('factura.estado = :estadoFactura');
+            $qb->setParameter("estadoFactura", "AUTORIZADO");
         }
         $qb->orderBy("factura.secuencial", "DESC");
         return $qb->getQuery()->getResult();

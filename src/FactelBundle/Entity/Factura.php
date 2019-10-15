@@ -211,6 +211,69 @@ class Factura {
     protected $valorTotal;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="nroCuota", type="integer", scale=2)
+     */
+    protected $nroCuota;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="banco", type="string", length=200, nullable=true)
+     */
+    protected $banco;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="ctaContable", type="integer")
+     */
+    protected $ctaContable;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fechaVencimiento", type="date")
+     */
+    protected $fechaVencimiento;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="nroCuenta", type="integer")
+     */
+    protected $nroCuenta;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="monto", type="decimal", scale=2)
+     */
+    protected $monto;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="abono", type="decimal", scale=2)
+     */
+    protected $abono;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="saldo", type="decimal", scale=2)
+     */
+    protected $saldo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="estadoCuenta", type="string", length=30, nullable=true)
+     */
+    protected $estadoCuenta;
+
+    /**
      * @ORM\Column(name="firmado", type="boolean")
      */
     private $firmado = false;
@@ -738,6 +801,7 @@ class Factura {
         return $this;
     }
 
+
     /**
      * Get valorTotal
      *
@@ -745,6 +809,201 @@ class Factura {
      */
     public function getValorTotal() {
         return $this->valorTotal;
+    }
+
+    /**
+     * Set nroCuota
+     *
+     * @param int $nroCuota
+     * @return Factura
+     */
+    public function setNroCuota($nroCuota) {
+        $this->nroCuota = $nroCuota;
+
+        return $this;
+    }
+
+
+    /**
+     * Get nroCuota
+     *
+     * @return int 
+     */
+    public function getNroCuota() {
+        return $this->nroCuota;
+    }
+
+    
+
+    /**
+     * Get banco
+     *
+     * @return string 
+     */
+    public function getBanco() {
+        return $this->banco;
+    }
+
+    /**
+     * Set banco
+     *
+     * @param string $banco
+     * @return Factura
+     */
+    public function setBanco($banco) {
+        $this->banco = $banco;
+
+        return $this;
+    }
+
+    /**
+     * Set fechaVencimiento
+     *
+     * @param \DateTime $fechaVencimiento
+     * @return Factura
+     */
+    public function setFechaVencimiento($fechaVencimiento) {
+        $this->fechaVencimiento = $fechaVencimiento;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaVencimiento
+     *
+     * @return \DateTime 
+     */
+    public function getFechaVencimiento() {
+        return $this->fechaVencimiento;
+    }
+
+    /**
+     * Set ctaContable
+     *
+     * @param integer $ctaContable
+     * @return Factura
+     */
+    public function setCtaContable($ctaContable) {
+        $this->ctaContable = $ctaContable;
+
+        return $this;
+    }
+
+    /**
+     * Get ctaContable
+     *
+     * @return integer 
+     */
+    public function getCtaContable() {
+        return $this->ctaContable;
+    }
+
+    /**
+     * Set nroCuenta
+     *
+     * @param integer $nroCuenta
+     * @return Factura
+     */
+    public function setNroCuenta($nroCuenta) {
+        $this->nroCuenta = $nroCuenta;
+
+        return $this;
+    }
+
+    /**
+     * Get nroCuenta
+     *
+     * @return integer 
+     */
+    public function getNroCuenta() {
+        return $this->nroCuenta;
+    }
+    
+    /**
+     * Set monto
+     *
+     * @param float $monto
+     * @return Factura
+     */
+    public function setMonto($monto) {
+        $this->monto = $monto;
+
+        return $this;
+    }
+    
+
+    /**
+     * Get monto
+     *
+     * @return float 
+     */
+    public function getMonto() {
+        return $this->monto;
+    }
+
+    /**
+     * Set abono
+     *
+     * @param float $abono
+     * @return Factura
+     */
+    public function setAbono($abono) {
+        $this->abono = $abono;
+
+        return $this;
+    }
+    
+
+    /**
+     * Get abono
+     *
+     * @return float 
+     */
+    public function getAbono() {
+        return $this->abono;
+    }
+
+    /**
+     * Set saldo
+     *
+     * @param float $saldo
+     * @return Factura
+     */
+    public function setSaldo($saldo) {
+        $this->saldo = $saldo;
+
+        return $this;
+    }
+    
+
+    /**
+     * Get saldo
+     *
+     * @return float 
+     */
+    public function getSaldo() {
+        return $this->saldo;
+    }
+    /**
+     * Set estadoCuenta
+     *
+     * @param string $estadoCuenta
+     * @return Factura
+     */
+    public function setEstadoCuenta($estadoCuenta) {
+        $this->estadoCuenta = $estadoCuenta;
+
+        return $this;
+    }
+    
+
+    /**
+     * Get estadoCuenta 
+     *
+     * @return string 
+     */
+    public function getEstadoCuenta() {
+        return $this->estadoCuenta;
     }
 
     /**

@@ -11,7 +11,7 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-right" role="menu">
             <li><a href="{{ path('notacredito_new') }}"><i class="fa fa-plus-circle"></i> Nueva</a></li>
-            {% if entity.estado == 'CREADA' or entity.estado == 'DEVUELTA' or entity.estado == 'NO AUTORIZADO'%}
+            {% if entity.estado == 'CREADA' or entity.estado == 'DEVUELTA' or entity.estado == 'NO AUTORIZADO' or entity.estado == 'PROCESANDOSE'%}
             <li><a href="{{ path('notacredito_edit',{ 'id': entity.id }) }}"><i class="fa fa-pencil-square-o"></i> Editar</a></li>
             {% endif %}
             <li><a href="{{ path('notacredito') }}"><i class="fa fa-list"></i> Notas Cr&eacute;dito</a></li>

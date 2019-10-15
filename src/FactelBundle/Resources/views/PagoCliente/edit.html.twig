@@ -1,0 +1,86 @@
+{% extends "FactelBundle::Layout.html.twig" %}
+
+{% block css %}
+<!-- DataTables CSS -->
+<link href="{{asset('recursos/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css')}}" rel="stylesheet">
+<!-- DataTables Responsive CSS -->
+<link href="{{asset('recursos/bower_components/datatables-responsive/css/dataTables.responsive.css')}}" rel="stylesheet">
+{% endblock %}
+{% block panel_title %}
+<i class="fa fa-bar-chart-o fa-fw"></i> Editar Cuentas
+
+<div class="pull-right">
+    <a href="{{ path('factura_new') }}">
+        <button class="btn btn-primary link-boton">
+            <i class="fa fa-plus-circle"></i>
+            Nueva
+        </button>
+    </a>
+    
+</div>
+{% endblock %}
+{% block content %}
+<table table class="table table-striped table-bordered table-hover" id="factura-table" name="f">
+<thead>
+            <tr>
+                <th class="ruc">RUC</th>
+                <th class="nombre">Nombre</th>
+                <th>Nro Comprobante</th>
+                <th>Fecha Reguistro</th>
+                <th>Fecha Vencimiento</th>
+                <th>Monto</th>
+                <th class="ruc">Abono</th>
+                <th>Saldo</th>
+                <th>Estado</th>
+                <th>Actions</th>
+            </tr>
+</thead>
+<tbody>
+{% for v in valor %}
+<tr id="cta_trtable">
+                {#<td><a href="{{ path('pago', { 'id': entity[0].id }) }}">{{ entity[0].nombre }}</a></td>#}
+                <td HEIGHT="2" class="ruc1">{{v[0].emisor.ruc}}</td>
+                <td HEIGHT="2" class="nombre1">{{v[0].cliente.nombre}}</td>
+                <td HEIGHT="2">{{ v[0].secuencial }}</td>
+                <td HEIGHT="2">{{ v[0].fechaEmision|date('d-m-Y') }}</td>
+                <td HEIGHT="2">{{ v[0].fechaAutorizacion|date('d-m-Y') }}</td>
+                <td HEIGHT="2">{{ v[0].monto }}</td>
+                <td HEIGHT="2" class="ruc1">{{ v[0].abono }}</td>
+                <td HEIGHT="2" id="sal">{{ v.total|round(2, 'floor') }}</td>
+                <td HEIGHT="2">{%if v[0].estadoCuenta =="CANCELADO" %}<button disabled="disabled" class="btn btn-success link-boton">CANCELADO</button>{%else%}<button disabled="disabled" class="btn btn-danger link-boton">PENDIENTE</button>{% endif%}</td>
+                <td HEIGHT="2">
+                    {#<a href="{{ path('form_edit', { 'id': entity.id }) }}" title="Editar">
+                        <button class="btn btn-primary link-boton">
+                            <i class="fa fa-pencil-square-o"></i>
+                        </button>
+                    </a>#}
+                    <div class="checkbox col-sm-6 ">
+                    
+                    <label>
+                        <input type="checkbox" name="id[]" value="{{ v.total }}" id="nuevoCliente" name = "nuevoCliente" onclick="saldo()">
+                    </label>
+                    </div>
+                    {#
+                    <a href="{{ path('flormu', { 'id': entity.id }) }}" title="Editar">
+                    <button class="btn btn-danger link-boton {#accion" data-toggle="modal" data-target="#confirm-delete" type="button" accion = "{{entity.id}}"#}{#">#}
+                        {#<i class="icon-trash"></i>
+                    </button>
+                    </a>#}
+                     {#{{ form(deleteForms[entity.id], { 'attr': {'id': entity.id } })}}#}
+                </td>
+            </tr>
+            <tr class='noSearch hide'>
+
+                <td colspan="5"></td>
+
+            </tr>
+{% endfor %}
+</tbody>
+</table>
+  {% block javascript %}
+        <script src="{{asset('recursos/js/estilos.js')}}"></script>
+    {% endblock %}
+
+
+
+{% endblock %}

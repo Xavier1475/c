@@ -117,14 +117,29 @@ class GuiaController extends Controller {
             return $this->redirect($this->generateUrl('guia_show', array('id' => $entity->getId())));
         }
         $emisor = $entity->getEmisor();
+        $hoy = date("Y-m-d");
+        if ($emisor->getPlan() != null && $emisor->getFechaFin()) {
+            if ($hoy > $emisor->getFechaFin()) {
+                $this->get('session')->getFlashBag()->add(
+                        'notice', "Su plan ha caducado por fovor contacte con nuestro equipo para su renovacion"
+                );
+                return $this->redirect($this->generateUrl('guia_show', array('id' => $entity->getId())));
+            }
+            if ($emisor->getCantComprobante() > $emisor->getPlan()->getCantComprobante()) {
+                $this->get('session')->getFlashBag()->add(
+                        'notice', "Ha superado el numero de comprobantes contratado en su plan, por fovor contacte con nuestro equipo para su renovacion"
+                );
+                return $this->redirect($this->generateUrl('guia_show', array('id' => $entity->getId())));
+            }
+        }
         $configApp = new \configAplicacion();
         $configApp->dirFirma = $emisor->getDirFirma();
         $configApp->passFirma = $emisor->getPassFirma();
         $configApp->dirAutorizados = $emisor->getDirDocAutorizados();
         if ($entity->getEstablecimiento()->getDirLogo() != "") {
             $configApp->dirLogo = $entity->getEstablecimiento()->getDirLogo();
-        }else{
-          $configApp->dirLogo = $emisor->getDirLogo();  
+        } else {
+            $configApp->dirLogo = $emisor->getDirLogo();
         }
 
         $configCorreo = new \configCorreo();
@@ -145,8 +160,8 @@ class GuiaController extends Controller {
             $guia->razonSocial = $emisor->getRazonSocial();
             if ($entity->getEstablecimiento()->getNombreComercial() != "") {
                 $guia->nombreComercial = $entity->getEstablecimiento()->getNombreComercial();
-            }else if($emisor->getNombreComercial() != ""){
-                 $guia->nombreComercial = $emisor->getNombreComercial();
+            } else if ($emisor->getNombreComercial() != "") {
+                $guia->nombreComercial = $emisor->getNombreComercial();
             }
             $guia->ruc = $emisor->getRuc(); //[Ruc]
             $guia->codDoc = "06";
@@ -233,7 +248,7 @@ class GuiaController extends Controller {
                         $entity->setEnviarSiAutorizado(true);
                     }
                 }
-            } else if ($entity->getEstado() == "ERROR") {
+            } else if ($entity->getEstado() == "ERROR" || $entity->getEstado() == "CREADA") {
                 $procesarComprobante->envioSRI = true;
                 $respuesta = $procesarComprobanteElectronico->procesarComprobante($procesarComprobante);
                 if ($respuesta->return->estadoComprobante == "DEVUELTA" || $respuesta->return->estadoComprobante == "NO AUTORIZADO") {
@@ -311,6 +326,10 @@ class GuiaController extends Controller {
         $entity->setEstado($respuesta->return->estadoComprobante);
         if ($entity->getEstado() == "AUTORIZADO") {
             $entity->setNombreArchivo("GR" . $entity->getEstablecimiento()->getCodigo() . "-" . $entity->getPtoEmision()->getCodigo() . "-" . $entity->getSecuencial());
+            if ($emisor->getAmbiente() == "2") {
+                $emisor->setCantComprobante($emisor->getCantComprobante() + 1);
+                $em->persist($emisor);
+            }
         }
         $mensajes = $entity->getMensajes();
         foreach ($mensajes as $mensaje) {
@@ -348,7 +367,7 @@ class GuiaController extends Controller {
      */
     public function sendEmail(Request $request, $id) {
         $destinatario = $request->request->get("email");
-        
+
         $procesarComprobanteElectronico = new \ProcesarComprobanteElectronico();
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('FactelBundle:Guia')->findGuiaById($id);
@@ -381,8 +400,8 @@ class GuiaController extends Controller {
         $comprobantePendiente->secuencial = $entity->getSecuencial();
         $comprobantePendiente->tipoEmision = $entity->getTipoEmision();
         $comprobantePendiente->enviarEmail = true;
-        if($destinatario != null && $destinatario != ''){
-          $comprobantePendiente->otrosDestinatarios = $destinatario;  
+        if ($destinatario != null && $destinatario != '') {
+            $comprobantePendiente->otrosDestinatarios = $destinatario;
         }
         $procesarComprobantePendiente = new \procesarComprobantePendiente();
         $procesarComprobantePendiente->comprobantePendiente = $comprobantePendiente;
@@ -410,7 +429,6 @@ class GuiaController extends Controller {
         return $this->redirect($this->generateUrl('guia_show', array('id' => $entity->getId())));
     }
 
-    
     /**
      * Creates a new Guia entity.
      *
@@ -642,7 +660,7 @@ class GuiaController extends Controller {
         $archivoName = $guia->getNombreArchivo();
         $pathXML = $guia->getEmisor()->getDirDocAutorizados() . "/" . $guia->getRucTransportista() . "/" . $archivoName . ".xml";
         $pathPDF = $guia->getEmisor()->getDirDocAutorizados() . "/" . $guia->getRucTransportista() . "/" . $archivoName . ".pdf";
-        
+
         if ($type == "zip") {
             $zip = new \ZipArchive();
             $zipDir = "../web/zip/" . $archivoName . '.zip';
@@ -738,9 +756,9 @@ class GuiaController extends Controller {
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Guia entity.');
         }
-        if ($entity->getEstado() == "AUTORIZADO" || $entity->getEstado() == "ERROR" || $entity->getEstado() == "PROCESANDOSE") {
+        if ($entity->getEstado() == "AUTORIZADO" || $entity->getEstado() == "ERROR") {
             $this->get('session')->getFlashBag()->add(
-                    'notice', "Solo puede ser editada la Guia en estado: NO AUTORIZADO Y DEVUELTA"
+                    'notice', "Solo puede ser editada la Guia en estado: NO AUTORIZADO, DEVUELTA y PROCESANDOSE"
             );
             return $this->redirect($this->generateUrl('guia_show', array('id' => $entity->getId())));
         }

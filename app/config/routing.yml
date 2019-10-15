@@ -1,8 +1,3 @@
-inicio:
-    resource: "@InicioBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
 factel:
     resource: "@FactelBundle/Controller/"
     type:     annotation

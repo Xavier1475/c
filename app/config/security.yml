@@ -18,7 +18,7 @@ security:
         in_memory:
             memory:
                 users:
-                    facilfact: { password: facilfact, roles: 'ROLE_ADMIN' }
+                    TECHCOMP: { password: Rock091410077, roles: 'ROLE_ADMIN' }
         user_db:
             entity: { class: FactelBundle\Entity\User, property: username }
        

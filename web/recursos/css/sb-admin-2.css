@@ -432,13 +432,13 @@ legend.border {
 }
 
 .creada{
-    color: yellow;
+    color: #FF931E;
 }
 
 .error{
-     color: #EE5757;
+     color: #FF0000;
 }
 
 .autorizada{
-    color: green;
+    color: #009245;
 }

@@ -1,0 +1,342 @@
+{% extends "FactelBundle::Layout.html.twig" %}
+{% block css %}
+<!-- DataTables CSS -->
+<link href="{{asset('recursos/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css')}}" rel="stylesheet">
+<!-- DataTables Responsive CSS -->
+<link href="{{asset('recursos/bower_components/datatables-responsive/css/dataTables.responsive.css')}}" rel="stylesheet">
+{% endblock %}
+{% block panel_title %}
+<i class="fa fa-bar-chart-o fa-fw"></i> Cuentas por Cobrar
+
+<div class="pull-right">
+    <a href="{{ path('factura_new') }}">
+        <button class="btn btn-primary link-boton">
+            <i class="fa fa-plus-circle"></i>
+            Nueva
+        </button>
+    </a>
+    
+</div>
+{% endblock %}
+{% block content %}
+
+{{form_start(form)}}
+<label for="inputEmail3" class="col-sm-4 col-form-label" style="margin-top: 0.7rem;">Cliente</label>
+<div class="row" style="margin-top:2rem">
+<div class="col-lg-12">
+        <div class="form-group row">
+            
+            <div class="col-sm-8">
+                {{form_widget(form.cliente)}}
+            </div>
+        </div>
+    </div>
+</div>    
+
+
+<div class="row" style="margin-top:2rem">
+    <div class="col-lg-4 chtm">
+        <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-4 col-form-label" style="margin-top: 0.7rem;">Forma pago</label>
+            <div class="col-sm-8">
+                {{form_widget(form.formaPago)}}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 vistaw chtm">
+        <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-4 col-form-label" style="margin-top: 0.7rem;">Nro Tarjeta</label>
+            <div class="col-sm-8">
+                {{form_widget(form.secuencial)}}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4 chtm">
+        <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label" style="margin-top: 0.7rem;">Valor</label>
+            <div class="col-sm-10 ">
+                {{form_widget(form.totalSinImpuestos)}}
+               
+                <button type="button" class="btn btn-outline-primary" onclick="des()">Guardar</button>
+                {% for v in entities %}
+                <a href="{{ path('form_edit', { 'id': v.saldo }) }}" title="Editar">
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 chtm">
+        <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-4 col-form-label" style="margin-top: 0.7rem;">Descuento</label>
+            <div class="col-sm-8">
+                {{form_widget(form.totalDescuento)}}
+                {#<button type="button" class="btn btn-outline-primary" onclick="saltot()">Saldo Total</button>#}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" style="margin-top:2rem">
+    <div class="col-lg-4 vista chtm">
+        <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-4 col-form-label" style="margin-top: 0.7rem;">Cuenta Contable</label>
+            <div class="col-sm-8">
+                {{form_widget(form.ctaContable)}}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 vista chtm">
+        <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-4 col-form-label" style="margin-top: 0.7rem;">Nro Cuenta</label>
+            <div class="col-sm-8">
+                {{form_widget(form.nroCuenta)}}
+            </div>
+        </div>
+    </div>
+        <div class="col-lg-4  ban chtm">
+        <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-4 col-form-label" style="margin-top: 0.7rem;">Banco</label>
+            <div class="col-sm-8">
+              {{form_widget(form.banco)}}
+            </div>
+        </div>
+    </div>
+     <div class="col-lg-2 chtm">
+        <div class="form-group row">
+            <div class="col-sm-10">
+               <input type="search" id="bus" class="form-control mr-sm-2" placeholder="Buscar Tarea" onkeyup="doSearch()">
+            </div>
+        </div>
+    </div>
+</div>
+
+{{form_end(form)}}
+
+<div class="dataTable_wrapper table-responsive col-lg-12">  
+    <table class="table table-striped table-bordered table-hover" id="factura-table" name="f">
+        <thead>
+            <tr>
+                <th class="ruc">RUC</th>
+                <th class="nombre">Nombre</th>
+                <th>Nro Comprobante</th>
+                <th>Nro Cuota</th>
+                <th>Fecha Reguistro</th>
+                <th>Fecha Vencimiento</th>
+                <th>Monto</th>
+                <th >Abono</th>
+                <th>Saldo</th>
+                {#<th>Estado</th>#}
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+        {% for entity in entities %}
+         {#<script>
+           function loadTable(fields, data) {
+    //$('#' + tableId).empty(); //not really necessary
+    var rows = '';
+    $.each(data, function(index, item) {
+        var row = '<tr>';
+        $.each(fields, function(index, field) {
+            row += '<td>' + item[field+''] + '</td>';
+        });
+        rows += row + '<tr>';
+    });
+    $('#factura-table').html(rows);
+}     
+loadTable('factura-table', [{{entity.emisor.ruc}}, {{entity.cliente.nombre}}, {{ entity.secuencial }}], entity);
+        </script>#}
+            <tr id="cta_trtable">
+                {#<td><a href="{{ path('pago', { 'id': entity[0].id }) }}">{{ entity[0].nombre }}</a></td>#}
+                <td HEIGHT="2" class="ruc1">{{entity.emisor.ruc}}</td>
+                <td HEIGHT="2" class="nombre1">{{entity.cliente.nombre}}</td>
+                <td HEIGHT="2">{{ entity.secuencial }}</td>
+                <td HEIGHT="2">{{entity.nroCuota}}</td>
+                <td HEIGHT="2">{{ entity.fechaEmision|date('d-m-Y') }}</td>
+                <td HEIGHT="2" id="cell">{% if entity.fechaVencimiento|date('d-m-Y')>"now"|date("d-m-Y") %}{{entity.fechaVencimiento|date('d-m-Y')}}{% else %}<button disabled="disabled" class="btn btn-danger link-boton">{{entity.fechaVencimiento|date('d-m-Y')}}</button>{% endif%}</td>{#{{ entity.fechaVencimiento|date('d-m-Y') }}</td>#}
+                <td HEIGHT="2">{{ entity.monto }}</td>
+                <td HEIGHT="2" >{{ entity.abono }}</td>
+                <td HEIGHT="2" id="sal" {% if entity.fechaVencimiento|date('d-m-Y')<="now"|date("d-m-Y") %} class="rojo" {% endif %}>{{ entity.saldo }}</td>
+                {#<td HEIGHT="2">{%if entity.estadoCuenta =="CANCELADO" %}<button disabled="disabled" class="btn btn-success link-boton">CANCELADO</button>{%else%}<button disabled="disabled" class="btn btn-danger link-boton">PENDIENTE</button>{% endif%}</td>#}
+                <td HEIGHT="2">
+                    {#<a href="{{ path('form_edit', { 'id': entity.id }) }}" title="Editar">
+                        <button class="btn btn-primary link-boton">
+                            <i class="fa fa-pencil-square-o"></i>
+                        </button>
+                    </a>#}
+                    <div class="checkbox col-sm-6 ">
+                    
+                    <label>
+                        <input type="checkbox" name="id[]" value="{{ entity.saldo }}" id="nuevoCliente" name = "nuevoCliente" onclick="saldo()">
+                    </label>
+                    </div>
+                    {#
+                    <a href="{{ path('flormu', { 'id': entity.id }) }}" title="Editar">
+                    <button class="btn btn-danger link-boton {#accion" data-toggle="modal" data-target="#confirm-delete" type="button" accion = "{{entity.id}}"#}{#">#}
+                        {#<i class="icon-trash"></i>
+                    </button>
+                    </a>#}
+                     {#{{ form(deleteForms[entity.id], { 'attr': {'id': entity.id } })}}#}
+                </td>
+            </tr>
+
+            <tr class='noSearch hide'>
+
+                <td colspan="5"></td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    
+    </table>
+    <div class="row" style="margin-top:2rem">
+        <div class="col-lg-4">
+            <div class="form-group row">
+                <label for="inputEmail3" class="col-sm-5 col-form-label" style="margin-top: 0.7rem;">TOTAL:</label>
+                <div class="col-sm-7">
+                    <input type="text" id="sum" class="form-control mr-sm-8" placeholder="0.00" disabled>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputEmail3" class="col-sm-5 col-form-label" style="margin-top: 0.7rem;">TOTAL VENCIDO:</label>
+                <div class="col-sm-7">
+                
+                <input type="text" id="sum1" class="form-control mr-sm-8" placeholder="0.00" disabled>
+                
+            </div>
+        </div>
+    </div>
+    </div>
+        
+<script>
+
+    
+
+</script>
+
+    {% endblock %}
+   {% block javascript %}
+        <script src="{{asset('recursos/js/estilos.js')}}"></script>
+    {% endblock %}
+   
+    
+    {# 
+    {% block javascript %}
+<!-- DataTables JavaScript -->
+<script src="{{asset('recursos/bower_components/datatables/media/js/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('recursos/bower_components/datatables/media/js/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('recursos/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js')}}"></script>
+<script src="{{asset('recursos/js/script.js')}}"></script>
+<script>
+
+                       
+                    function saldo(){
+                        /*
+                        let buys = document.getElementById('factura-table');
+                        //let cboxAll = buys.querySelector('thead input[type="checkbox"]');
+                        let cboxes = buys.querySelectorAll('tbody input[type="checkbox"]');
+                        let totalOutput = document.getElementById('idCliente');
+                        let total = 0;
+                        
+                        [].forEach.call(cboxes, function (cbox) {
+                        cbox.addEventListener('change', handleRowSelect);
+                        });
+                        
+                        /*cboxAll.addEventListener('change', function () {
+                        [].forEach.call(cboxes, function (cbox) {
+                            //cbox.checked = cboxAll.checked;
+                            cbox.click();
+                        });
+                        });*/
+                        /*
+                        function handleRowSelect (e) {
+                        let row = e.target.parentNode.parentNode;
+                        //let qty = row.querySelector('td:nth-child(3)').textContent;
+                        let price = row.querySelector('td:nth-child(6)').textContent;
+                        let cost = Number(price) ;//* Number(price);
+                        
+                        if (e.target.checked) {
+                            total += cost;
+                        } else {
+                            total -= cost;
+                        }
+                    
+                    total = Number(total.toFixed(2));
+                    totalOutput.value = total;
+                    }
+                    */total=0
+                   $("input:checkbox:checked").each(function() {
+                       var count = Number($(this).val());
+                       total += count;
+                       $('#idCliente').val(total);
+                    });
+
+
+
+                    
+                    
+                    }
+                    {#
+    var oTable = $("#factura-table").dataTable({
+        columnDefs: [
+            {
+                targets: 1,
+                render: function(data, type, row) {
+                    return "<a href='"+row[0]+"'>" + data + "</a>";
+                },
+                
+                
+            },
+            
+            {"visible": false, "targets": [0]}
+            
+            
+        ],
+        
+        responsive: true,
+        bAutoWidth: true,
+        sAjaxSource: "{{ path('all_factura')}}",
+        bProcessing: true,
+        bServerSide: true,
+        bSort: false,
+        aLengthMenu: [[5, 10, 15], [5, 10, 15]],
+        language: {
+            sProcessing: "Procesando...",
+            sLengthMenu: "Mostrar _MENU_",
+            sZeroRecords: "No se encontraron resultados",
+            sEmptyTable: "Ningún dato disponible en esta tabla",
+            sInfo: "Mostrando del _START_ al _END_ de _TOTAL_ registros",
+            sInfoEmpty: "Mostrando del 0 al 0 de un total de 0 registros",
+            sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
+            sInfoPostFix: "",
+            sSearch: "Buscar:",
+            sUrl: "",
+            sInfoThousands: ",",
+            sLoadingRecords: "Cargando...",
+            oPaginate: {
+                sFirst: "Primero",
+                sLast: "Último",
+                sNext: "Siguiente",
+                sPrevious: "Anterior"
+            },
+            oAria: {
+                sSortAscending: ": Activar para ordenar la columna de manera ascendente",
+                sSortDescending: ": Activar para ordenar la columna de manera descendente"
+            },
+        },
+    });
+    $('#factura-table_filter input').unbind();
+    $('#factura-table_filter input').bind('keyup', function(e) {
+        if (e.keyCode == 13) {
+            oTable.fnFilter($(this).val());
+        }
+    });
+    #}
+    {#
+</script>
+ #}
+{#
+   {% endblock %} 
+   #}
+   

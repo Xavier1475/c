@@ -16,11 +16,11 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-xs-3">
-                            <i class="fa fa-keyboard-o fa-5x"></i>
+                            <i class="icon-untitled-14 fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
                             <div class="huge">{{registrados}}</div>
-                            <div>Registrados</div>
+                            <div>REGISTRADOS</div>
                         </div>
                     </div>
                 </div>
@@ -33,11 +33,11 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-xs-3">
-                            <i class="fa fa-check-square-o fa-5x"></i>
+                            <i class="icon-check fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
                             <div class="huge">{{autorizados}}</div>
-                            <div>Autorizados</div>
+                            <div>AUTORIZADOS</div>
                         </div>
                     </div>
 
@@ -51,11 +51,11 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-xs-3">
-                            <i class="fa fa-spinner fa-5x"></i>
+                            <i class="icon-spin4 fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
                             <div class="huge">{{procesandose}}</div>
-                            <div>Procesandose</div>
+                            <div>PROCESADOS</div>
                         </div>
                     </div>
                 </div>
@@ -68,11 +68,11 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-xs-3">
-                            <span class="glyphicon glyphicon-remove-circle fa-5x"></span>
+                            <span class="icon-attention fa-5x"></span>
                         </div>
                         <div class="col-xs-9 text-right">
                             <div class="huge">{{noAutorizados}}</div>
-                            <div>No Autorizados</div>
+                            <div>NO AUTORIZADOS</div>
                         </div>
                     </div>
                 </div>
@@ -81,11 +81,9 @@
     </div>
 </div>
 <div class="row">
+   
     <div class="col-md-12">
-        <canvas id="line-chart"  height="100"></canvas>
-    </div>
-    <div class="col-md-12">
-        <canvas id="bar-chart" height="100"></canvas>
+        <canvas id="bar-chart" height="75"></canvas>
     </div>
 </div>
 <!-- /.row -->
@@ -97,34 +95,7 @@
 {% if is_granted('ROLE_EMISOR') %}
 <script src="{{asset('recursos/js/Chart.min.js')}}"></script>
 <script>
-    
-
-
-    new Chart(document.getElementById("line-chart"), {
-        type: 'line',
-        data: {
-            labels: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
-            datasets: [{
-                    data: [{{ventaTotalActual}}],
-                    label: "2018",
-                    borderColor: "#3e95cd",
-                    fill: false
-                }, {
-                    data: [{{ventaTotalAnnoAnterior}}],
-                    label: "2017",
-                    borderColor: "#3cba9f",
-                    fill: false
-                },
-            ]
-        },
-        options: {
-            title: {
-                display: true,
-                text: 'Ventas Año Actual VS Año Anterior'
-            }
-        }
-    });
-
+   
     new Chart(document.getElementById("bar-chart"), {
         type: 'bar',
         data: {
@@ -141,7 +112,7 @@
             legend: {display: false},
             title: {
                 display: true,
-                text: 'Ventas por dia mes actual'
+                text: 'VENTAS POR DÍA'
             }
         }
     });
